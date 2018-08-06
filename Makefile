@@ -27,5 +27,7 @@ INSTALLS_ICONS=	yes
 
 USE_LDCONFIG=	yes
 
+CONFIGURE_ARGS+=	--disable-nls
+
 .include <bsd.port.mk>
 
