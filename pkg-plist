@@ -2343,4 +2343,6 @@ bin/lepton-xyrs
 bin/lepton-schematic
 lib/libleptonrenderer.so.1.0.0
 lib/liblepton.so.1.0.0
+libdata/pkgconfig/liblepton.pc
+libdata/pkgconfig/libleptonrenderer.pc
 @dir %%DATADIR%%/sym/local
