@@ -17,7 +17,7 @@ LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
 LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
-USES=	desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix
+USES=	gettext desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix
 
 SHEBANG_FILES=	utils/scripts/lepton-tragesym utils/scripts/lepton-archive.py
 
@@ -34,7 +34,7 @@ INSTALLS_ICONS=	yes
 
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS+=	--disable-nls
+# CONFIGURE_ARGS+=	--disable-nls
 
 INFO=	lepton-scheme
 
