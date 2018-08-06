@@ -598,8 +598,6 @@ man/man1/lepton-tragesym.1.gz
 man/man1/lepton-schematic.1.gz
 man/man1/lepton-sch2pcb.1.gz
 man/man1/lepton-archive.1.gz
-share/info/dir
-share/info/lepton-scheme.info
 share/mime/types
 share/mime/XMLnamespaces
 share/mime/packages/liblepton.xml
