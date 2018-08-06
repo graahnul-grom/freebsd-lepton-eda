@@ -10,7 +10,7 @@ COMMENT=	GPL Electronic Design Automation
 
 LICENSE=	GPLv2+
 
-USES=	desktop-file-utils shared-mime-info shebangfix
+USES=	desktop-file-utils shared-mime-info libtool shebangfix
 
 SHEBANG_FILES=	bin/lepton-tragesym bin/lepton-archive
 
@@ -22,7 +22,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
 DATADIR=	${PREFIX}/share/${PORTNAME}
 
-USE_GNOME=	gtk20
+USE_GNOME=	gtk20 cairo
 INSTALLS_ICONS=	yes
 
 USE_LDCONFIG=	yes
