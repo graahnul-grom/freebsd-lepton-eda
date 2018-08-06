@@ -19,5 +19,7 @@ DATADIR=	${PREFIX}/share/${PORTNAME}
 USE_GNOME=	gtk20
 INSTALLS_ICONS=	yes
 
+USE_LDCONFIG=	yes
+
 .include <bsd.port.mk>
 
