@@ -2395,3 +2395,4 @@ lib/pkgconfig/liblepton.pc
 lib/pkgconfig/libleptonrenderer.pc
 lib/liblepton.so.1.0.0
 lib/liblepton.la
+@dir %%DATADIR%%/sym/local
