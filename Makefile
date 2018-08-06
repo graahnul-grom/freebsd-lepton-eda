@@ -17,7 +17,7 @@ LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
 LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
-USES=	desktop-file-utils shared-mime-info libtool python shebangfix
+USES=	desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix
 
 SHEBANG_FILES=	utils/scripts/lepton-tragesym utils/scripts/lepton-archive.py
 
