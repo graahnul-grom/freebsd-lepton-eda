@@ -36,5 +36,7 @@ USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS+=	--disable-nls
 
+INFO=	lepton-scheme
+
 .include <bsd.port.mk>
 
