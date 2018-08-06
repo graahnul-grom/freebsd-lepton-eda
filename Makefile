@@ -10,9 +10,16 @@ COMMENT=	GPL Electronic Design Automation
 
 LICENSE=	GPLv2+
 
-USES=	desktop-file-utils shared-mime-info libtool shebangfix
+LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
+LIB_DEPENDS+=libfreetype.so:print/freetype2
+LIB_DEPENDS+=libguile-2.0.so:lang/guile2
+LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
+LIB_DEPENDS+=libstroke.so:devel/libstroke
+LIB_DEPENDS+=libpng16.so:graphics/png
 
-SHEBANG_FILES=	bin/lepton-tragesym bin/lepton-archive
+USES=	desktop-file-utils shared-mime-info libtool python shebangfix
+
+SHEBANG_FILES=	utils/scripts/lepton-tragesym utils/scripts/lepton-archive.py
 
 GNU_CONFIGURE=	yes
 
