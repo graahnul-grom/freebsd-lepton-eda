@@ -618,7 +618,6 @@ share/icons/hicolor/22x22/mimetypes/application-x-lepton-symbol.png
 share/icons/hicolor/32x32/mimetypes/application-x-lepton-sch2pcb-project.png
 share/icons/hicolor/32x32/mimetypes/application-x-lepton-symbol.png
 share/icons/hicolor/32x32/mimetypes/application-x-lepton-schematic.png
-share/icons/hicolor/icon-theme.cache
 share/icons/hicolor/24x24/mimetypes/application-x-lepton-schematic.png
 share/icons/hicolor/24x24/mimetypes/application-x-lepton-symbol.png
 share/icons/hicolor/24x24/mimetypes/application-x-lepton-sch2pcb-project.png
@@ -2319,7 +2318,6 @@ share/icons/hicolor/22x22/actions/insert-bus.png
 share/icons/hicolor/22x22/actions/insert-text.png
 share/icons/hicolor/22x22/actions/select.png
 share/icons/hicolor/22x22/actions/insert-net.png
-share/icons/hicolor/icon-theme.cache
 include/libleptonrenderer/edarenderer.h
 include/libleptonrenderer/edacairo.h
 include/libleptonrenderer/libleptonrenderer.h
