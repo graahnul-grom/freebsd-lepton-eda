@@ -10,5 +10,8 @@ COMMENT=	GPL Electronic Design Automation
 
 GNU_CONFIGURE=	yes
 
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+
 .include <bsd.port.mk>
 
