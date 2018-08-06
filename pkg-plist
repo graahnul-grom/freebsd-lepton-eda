@@ -603,7 +603,6 @@ share/mime/application/x-lepton-schematic.xml
 share/mime/application/x-lepton-sch2pcb-project.xml
 share/mime/application/x-lepton-symbol.xml
 share/applications/lepton-schematic.desktop
-share/applications/mimeinfo.cache
 share/applications/lepton-attrib.desktop
 share/icons/hicolor/scalable/mimetypes/application-x-lepton-sch2pcb-project.svg
 share/icons/hicolor/scalable/mimetypes/application-x-lepton-symbol.svg
