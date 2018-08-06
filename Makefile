@@ -10,6 +10,10 @@ COMMENT=	GPL Electronic Design Automation
 
 LICENSE=	GPLv2+
 
+USES=	desktop-file-utils shared-mime-info shebangfix
+
+SHEBANG_FILES=	bin/lepton-tragesym bin/lepton-archive
+
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
