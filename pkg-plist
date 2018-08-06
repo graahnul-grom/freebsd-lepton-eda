@@ -2341,7 +2341,11 @@ bin/lepton-refdes_renum
 bin/lepton-attrib
 bin/lepton-xyrs
 bin/lepton-schematic
+lib/libleptonrenderer.so
+lib/libleptonrenderer.so.1
 lib/libleptonrenderer.so.1.0.0
+lib/liblepton.so
+lib/liblepton.so.1
 lib/liblepton.so.1.0.0
 libdata/pkgconfig/liblepton.pc
 libdata/pkgconfig/libleptonrenderer.pc
