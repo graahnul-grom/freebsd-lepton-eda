@@ -8,5 +8,7 @@ MASTER_SITES=
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	GPL Electronic Design Automation
 
+GNU_CONFIGURE=	yes
+
 .include <bsd.port.mk>
 
