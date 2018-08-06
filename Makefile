@@ -3,7 +3,7 @@
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.3
 CATEGORIES=	cad
-MASTER_SITES=
+MASTER_SITES=	http://demon/ee/
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	GPL Electronic Design Automation
