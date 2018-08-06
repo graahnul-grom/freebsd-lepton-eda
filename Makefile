@@ -16,5 +16,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
 DATADIR=	${PREFIX}/share/${PORTNAME}
 
+USE_GNOME=	gtk20
+INSTALLS_ICONS=	yes
+
 .include <bsd.port.mk>
 
