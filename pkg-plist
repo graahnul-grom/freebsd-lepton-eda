@@ -583,7 +583,6 @@
 %%DOCSDIR%%/man/lepton-sch2pcb.html
 %%DOCSDIR%%/man/lepton-tragesym.html
 %%DOCSDIR%%/man/lepton-symcheck.html
-share/man/mandoc.db
 share/man/man1/lepton-cli.1
 share/man/man1/lepton-attrib.1
 share/man/man1/lepton-refdes_renum.1
