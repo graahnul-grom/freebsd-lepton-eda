@@ -13,5 +13,8 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
+DATADIR=	${PREFIX}/share/${PORTNAME}
+
 .include <bsd.port.mk>
 
