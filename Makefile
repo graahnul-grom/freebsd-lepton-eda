@@ -8,6 +8,8 @@ MASTER_SITES=	http://demon/ee/
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	GPL Electronic Design Automation
 
+LICENSE=	GPLv2+
+
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
