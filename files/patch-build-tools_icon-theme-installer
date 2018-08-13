@@ -1,0 +1,11 @@
+--- build-tools/icon-theme-installer.orig	2018-08-13 18:27:44 UTC
++++ build-tools/icon-theme-installer
+@@ -108,7 +108,7 @@ if test ! -x `echo "$MKINSTALLDIRS_EXEC"
+ 	exit 1
+ fi
+ 
+-if test ! -x `echo "$INSTALL_DATA_EXEC" | cut -f1 -d' '`; then
++if test ! -x $(which `echo "$INSTALL_DATA_EXEC" | cut -f1 -d' '`); then
+ 	echo "Cannot find '$INSTALL_DATA_EXEC'; You probably want to pass -x \$(INSTALL_DATA)"
+ 	exit 1
+ fi
