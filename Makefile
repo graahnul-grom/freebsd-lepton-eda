@@ -47,7 +47,8 @@ USES+=shared-mime-info
 USES+=libtool
 USES+=pkgconfig
 USES+=pathfix
-USES+=python
+USES+=python:run
+USES+=perl5
 USES+=shebangfix
 
 
@@ -60,7 +61,8 @@ USES+=shebangfix
 # USES+=libtool
 # USES+=pkgconfig
 # USES+=pathfix
-# USES+=python
+# USES+=python:run
+# USES+=perl5
 # USES+=shebangfix
 # USES+=autoreconf
 
