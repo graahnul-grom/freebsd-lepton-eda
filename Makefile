@@ -54,7 +54,21 @@ USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
 
 
-SHEBANG_FILES=	utils/scripts/lepton-tragesym utils/scripts/lepton-archive.py
+SHEBANG_FILES+=utils/scripts/lepton-tragesym
+SHEBANG_FILES+=utils/scripts/lepton-archive.py
+SHEBANG_FILES+=utils/gxyrs/lepton-xyrs.pl
+SHEBANG_FILES+=utils/scripts/gschupdate
+SHEBANG_FILES+=utils/scripts/gsymupdate
+SHEBANG_FILES+=utils/scripts/lepton-pcb_backannotate
+SHEBANG_FILES+=utils/scripts/lepton-refdes_renum
+SHEBANG_FILES+=utils/scripts/lepton-symfix
+
+SHEBANG_FILES+=examples/lightning_detector/bom
+
+SHEBANG_FILES+=contrib/scripts/mk_char_tab.pl
+SHEBANG_FILES+=contrib/scripts/pads_backannotate
+SHEBANG_FILES+=contrib/scripts/sarlacc_sym
+
 
 GNU_CONFIGURE=	yes
 
