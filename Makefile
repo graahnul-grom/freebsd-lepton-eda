@@ -41,13 +41,28 @@ LIB_DEPENDS+=libpng16.so:graphics/png
 #
 # for lepton-eda-1.9.4.tar.gz:
 #
-USES=	gettext desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix
+USES+=gettext
+USES+=desktop-file-utils
+USES+=shared-mime-info
+USES+=libtool
+USES+=pkgconfig
+USES+=pathfix
+USES+=python
+USES+=shebangfix
 
 
 #
 # for 1.9.4-20180812.tar.gz:
 #
-# USES=	gettext desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix autoreconf
+# USES+=gettext
+# USES+=desktop-file-utils
+# USES+=shared-mime-info
+# USES+=libtool
+# USES+=pkgconfig
+# USES+=pathfix
+# USES+=python
+# USES+=shebangfix
+# USES+=autoreconf
 
 
 USE_GNOME=	gtk20 cairo
