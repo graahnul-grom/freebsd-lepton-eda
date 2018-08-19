@@ -4,6 +4,9 @@ PORTNAME=	lepton-eda
 PORTVERSION=	1.9.4
 
 
+MAINTAINER=	graahnul.grom@gmail.com
+COMMENT=	Lepton Electronic Design Automation
+LICENSE=	GPLv2+
 CATEGORIES=	cad
 
 
@@ -27,11 +30,6 @@ MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${GH_TA
 # debug: MASTER_SITES=	http://demon/ee/
 
 
-MAINTAINER=	graahnul.grom@gmail.com
-COMMENT=	Lepton Electronic Design Automation
-LICENSE=	GPLv2+
-
-
 LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
 LIB_DEPENDS+=libfreetype.so:print/freetype2
 LIB_DEPENDS+=libguile-2.0.so:lang/guile2
@@ -52,6 +50,10 @@ USES=	gettext desktop-file-utils shared-mime-info libtool pkgconfig pathfix pyth
 # USES=	gettext desktop-file-utils shared-mime-info libtool pkgconfig pathfix python shebangfix autoreconf
 
 
+USE_GNOME=	gtk20 cairo
+USE_LDCONFIG=	yes
+
+
 SHEBANG_FILES=	utils/scripts/lepton-tragesym utils/scripts/lepton-archive.py
 
 GNU_CONFIGURE=	yes
@@ -62,12 +64,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
 DATADIR=	${PREFIX}/share/${PORTNAME}
 
-USE_GNOME=	gtk20 cairo
 INSTALLS_ICONS=	yes
-
-USE_LDCONFIG=	yes
-
-# CONFIGURE_ARGS+=	--disable-nls
 
 INFO=	lepton-scheme
 
