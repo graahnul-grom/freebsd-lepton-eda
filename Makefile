@@ -11,15 +11,6 @@ CATEGORIES=	cad
 
 
 #
-# for 1.9.4-20180812.tar.gz (extracts to dir named "lepton-eda-1.9.4-20180812"):
-#
-# DISTVERSIONSUFFIX=	-20180812
-# DISTNAME=	${PORTVERSION}${DISTVERSIONSUFFIX}
-# WRKSRC=    ${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
-# MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/archive/
-
-
-#
 # for lepton-eda-1.9.5.tar.gz (extracts to dir named "lepton-eda-1.9.5"):
 #
 # TODO: is it allowed to use GH_TAGNAME while not using USE_GITHUB:
@@ -38,9 +29,6 @@ LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
 
-#
-# for lepton-eda-1.9.4.tar.gz:
-#
 USES+=gettext
 USES+=desktop-file-utils
 USES+=shared-mime-info
@@ -50,22 +38,6 @@ USES+=pathfix
 USES+=python:run
 USES+=perl5
 USES+=shebangfix
-
-
-#
-# for 1.9.4-20180812.tar.gz:
-#
-# USES+=gettext
-# USES+=desktop-file-utils
-# USES+=shared-mime-info
-# USES+=libtool
-# USES+=pkgconfig
-# USES+=pathfix
-# USES+=python:run
-# USES+=perl5
-# USES+=shebangfix
-# USES+=autoreconf
-
 
 USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
