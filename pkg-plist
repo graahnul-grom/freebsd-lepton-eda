@@ -71,8 +71,8 @@ lib/liblepton.so
 lib/liblepton.so.2
 lib/liblepton.so.2.0.0
 lib/libleptonrenderer.so
-lib/libleptonrenderer.so.0
-lib/libleptonrenderer.so.0.1.0
+lib/libleptonrenderer.so.1
+lib/libleptonrenderer.so.1.0.1
 libdata/pkgconfig/liblepton.pc
 libdata/pkgconfig/libleptonrenderer.pc
 man/man1/lepton-archive.1.gz

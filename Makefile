@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.4
+PORTVERSION=	1.9.5
 
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -20,12 +20,12 @@ CATEGORIES=	cad
 
 
 #
-# for lepton-eda-1.9.4.tar.gz (extracts to dir named "lepton-eda-1.9.4"):
+# for lepton-eda-1.9.5.tar.gz (extracts to dir named "lepton-eda-1.9.5"):
 #
 # TODO: is it allowed to use GH_TAGNAME while not using USE_GITHUB:
-GH_TAGNAME=	1.9.4-20180812
+GH_TAGNAME=	1.9.5-20180820
 MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${GH_TAGNAME}/
-# debug: DMN_DOWN_SUBDIR_SUFFIX=	-20180812
+# debug: DMN_DOWN_SUBDIR_SUFFIX=	-20180820
 # debug: MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}${DMN_DOWN_SUBDIR_SUFFIX}/
 # debug: MASTER_SITES=	http://demon/ee/
 
