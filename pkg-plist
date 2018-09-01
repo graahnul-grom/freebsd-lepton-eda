@@ -777,6 +777,7 @@ share/icons/hicolor/scalable/mimetypes/application-x-lepton-symbol.svg
 %%DATADIR%%/scheme/gnet-spice.scm
 %%DATADIR%%/scheme/gnet-switcap.scm
 %%DATADIR%%/scheme/gnet-systemc.scm
+%%DATADIR%%/scheme/gnet-tEDAx.scm
 %%DATADIR%%/scheme/gnet-tango.scm
 %%DATADIR%%/scheme/gnet-vams.scm
 %%DATADIR%%/scheme/gnet-verilog.scm
