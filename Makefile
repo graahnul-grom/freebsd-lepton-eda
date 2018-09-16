@@ -2,6 +2,8 @@
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.5
+USE_GITHUB=	yes
+DISTVERSIONSUFFIX=	-20180820
 
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -14,8 +16,8 @@ CATEGORIES=	cad
 # for lepton-eda-1.9.5.tar.gz (extracts to dir named "lepton-eda-1.9.5"):
 #
 # TODO: is it allowed to use GH_TAGNAME while not using USE_GITHUB:
-GH_TAGNAME=	1.9.5-20180820
-MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${GH_TAGNAME}/
+# GH_TAGNAME=	1.9.5-20180820
+# MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${GH_TAGNAME}/
 # debug: DMN_DOWN_SUBDIR_SUFFIX=	-20180820
 # debug: MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}${DMN_DOWN_SUBDIR_SUFFIX}/
 # debug: MASTER_SITES=	http://demon/ee/
@@ -24,11 +26,12 @@ MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${GH_TA
 LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
 LIB_DEPENDS+=libfreetype.so:print/freetype2
 LIB_DEPENDS+=libguile-2.0.so:lang/guile2
-LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
-LIB_DEPENDS+=libstroke.so:devel/libstroke
+# LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
+# LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
 
+USES+=autoreconf
 USES+=gettext
 USES+=desktop-file-utils
 USES+=shared-mime-info
