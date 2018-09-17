@@ -2,13 +2,15 @@
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.5
-USE_GITHUB=	yes
 DISTVERSIONSUFFIX=	-20180820
+CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
+
 LICENSE=	GPLv2+
-CATEGORIES=	cad
+
+USE_GITHUB=	yes
 
 OPTIONS_DEFINE=	DOCS
 
