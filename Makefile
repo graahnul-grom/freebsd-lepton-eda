@@ -11,6 +11,7 @@ COMMENT=	Lepton Electronic Design Automation
 LICENSE=	GPLv2+
 CATEGORIES=	cad
 
+OPTIONS_DEFINE=	DOCS
 
 #
 # for lepton-eda-1.9.5.tar.gz (extracts to dir named "lepton-eda-1.9.5"):
