@@ -5,7 +5,6 @@ PORTVERSION=	1.9.5
 USE_GITHUB=	yes
 DISTVERSIONSUFFIX=	-20180820
 
-
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
 LICENSE=	GPLv2+
@@ -23,14 +22,12 @@ OPTIONS_DEFINE=	DOCS
 # debug: MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}${DMN_DOWN_SUBDIR_SUFFIX}/
 # debug: MASTER_SITES=	http://demon/ee/
 
-
 LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
 LIB_DEPENDS+=libfreetype.so:print/freetype2
 LIB_DEPENDS+=libguile-2.0.so:lang/guile2
 # LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
 # LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
-
 
 USES+=autoreconf
 USES+=gettext
@@ -45,7 +42,6 @@ USES+=shebangfix
 
 USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
-
 
 SHEBANG_FILES+=utils/scripts/lepton-tragesym
 SHEBANG_FILES+=utils/scripts/lepton-archive.py
@@ -62,7 +58,6 @@ SHEBANG_FILES+=contrib/scripts/mk_char_tab.pl
 SHEBANG_FILES+=contrib/scripts/pads_backannotate
 SHEBANG_FILES+=contrib/scripts/sarlacc_sym
 
-
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -74,7 +69,6 @@ DATADIR=	${PREFIX}/share/${PORTNAME}
 INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
-
 
 #
 # work around for errors while running
@@ -110,6 +104,4 @@ pre-build:
 		${WRKSRC}/liblepton/data/Makefile \
 		${WRKSRC}/schematic/data/Makefile
 
-
 .include <bsd.port.mk>
-
