@@ -42,6 +42,7 @@ USES+=pathfix
 USES+=python:run
 USES+=perl5
 USES+=shebangfix
+USES+=makeinfo
 
 USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
