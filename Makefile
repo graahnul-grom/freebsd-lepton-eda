@@ -32,7 +32,7 @@ LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
 LIB_DEPENDS+=libfreetype.so:print/freetype2
 LIB_DEPENDS+=libguile-2.0.so:lang/guile2
 # LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
-# LIB_DEPENDS+=libstroke.so:devel/libstroke
+LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
 USES+=autoreconf
