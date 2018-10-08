@@ -1,5 +1,5 @@
---- /dev/null	2018-10-01 15:13:26.000000000 +0300
-+++ version.h	2018-08-20 23:22:20.000000000 +0300
+--- version.h.orig	2018-10-08 11:02:32 UTC
++++ version.h
 @@ -0,0 +1,8 @@
 +/* Date part of package version string. */
 +#define PACKAGE_DATE_VERSION "20180820"
