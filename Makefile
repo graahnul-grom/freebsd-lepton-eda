@@ -12,8 +12,13 @@ LICENSE=	GPLv2+
 
 USE_GITHUB=	yes
 
-OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=	DOCS
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_DEFAULT=	DOCS NLS
+
+OPTIONS_SUB=	yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=	gettext
 
 #
 # for lepton-eda-1.9.5.tar.gz (extracts to dir named "lepton-eda-1.9.5"):
