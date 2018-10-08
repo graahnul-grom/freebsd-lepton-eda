@@ -10,14 +10,6 @@ COMMENT=	Lepton Electronic Design Automation
 
 LICENSE=	GPLv2+
 
-OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_DEFAULT=	DOCS NLS
-
-OPTIONS_SUB=	yes
-
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext
-
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libguile-2.0.so:lang/guile2 \
@@ -56,6 +48,14 @@ DATADIR=	${PREFIX}/share/${PORTNAME}
 INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
+
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_DEFAULT=	DOCS NLS
+
+OPTIONS_SUB=	yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=	gettext
 
 pre-build:
 	${REINPLACE_CMD} \
