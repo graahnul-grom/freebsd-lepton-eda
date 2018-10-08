@@ -18,43 +18,32 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=	gettext
 
-LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
-LIB_DEPENDS+=libfreetype.so:print/freetype2
-LIB_DEPENDS+=libguile-2.0.so:lang/guile2
-LIB_DEPENDS+=libstroke.so:devel/libstroke
-LIB_DEPENDS+=libpng16.so:graphics/png
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libguile-2.0.so:lang/guile2 \
+		libstroke.so:devel/libstroke \
+		libpng16.so:graphics/png
 
-USES+=autoreconf
-USES+=gettext
-USES+=desktop-file-utils
-USES+=shared-mime-info
-USES+=libtool
-USES+=pkgconfig
-USES+=pathfix
-USES+=python:run
-USES+=perl5
-USES+=shebangfix
-USES+=makeinfo
+USES=	autoreconf gettext desktop-file-utils shared-mime-info libtool \
+		pkgconfig pathfix python:run perl5 shebangfix makeinfo
 
 USE_GITHUB=	yes
 
 USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES+=utils/scripts/lepton-tragesym
-SHEBANG_FILES+=utils/scripts/lepton-archive.py
-SHEBANG_FILES+=utils/gxyrs/lepton-xyrs.pl
-SHEBANG_FILES+=utils/scripts/gschupdate
-SHEBANG_FILES+=utils/scripts/gsymupdate
-SHEBANG_FILES+=utils/scripts/lepton-pcb_backannotate
-SHEBANG_FILES+=utils/scripts/lepton-refdes_renum
-SHEBANG_FILES+=utils/scripts/lepton-symfix
-
-SHEBANG_FILES+=examples/lightning_detector/bom
-
-SHEBANG_FILES+=contrib/scripts/mk_char_tab.pl
-SHEBANG_FILES+=contrib/scripts/pads_backannotate
-SHEBANG_FILES+=contrib/scripts/sarlacc_sym
+SHEBANG_FILES=	utils/scripts/lepton-tragesym \
+		utils/scripts/lepton-archive.py \
+		utils/gxyrs/lepton-xyrs.pl \
+		utils/scripts/gschupdate \
+		utils/scripts/gsymupdate \
+		utils/scripts/lepton-pcb_backannotate \
+		utils/scripts/lepton-refdes_renum \
+		utils/scripts/lepton-symfix \
+		examples/lightning_detector/bom \
+		contrib/scripts/mk_char_tab.pl \
+		contrib/scripts/pads_backannotate \
+		contrib/scripts/sarlacc_sym
 
 GNU_CONFIGURE=	yes
 
