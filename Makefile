@@ -10,8 +10,6 @@ COMMENT=	Lepton Electronic Design Automation
 
 LICENSE=	GPLv2+
 
-USE_GITHUB=	yes
-
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_DEFAULT=	DOCS NLS
 
@@ -48,6 +46,8 @@ USES+=python:run
 USES+=perl5
 USES+=shebangfix
 USES+=makeinfo
+
+USE_GITHUB=	yes
 
 USE_GNOME=	gtk20 cairo
 USE_LDCONFIG=	yes
