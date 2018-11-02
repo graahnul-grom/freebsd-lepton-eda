@@ -3,7 +3,7 @@ freebsd-lepton-eda
 
 [Lepton EDA](https://github.com/lepton-eda/lepton-eda) (Electronic Design Automation) port fot FreeBSD
 
-Current version: 1.9.6 - [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md)
+Current version: [1.9.6](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.6-20181101) - [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md)
 
 Install:
 
