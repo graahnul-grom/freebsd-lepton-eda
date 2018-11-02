@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.5
-DISTVERSIONSUFFIX=	-20180820
+PORTVERSION=	1.9.6
+DISTVERSIONSUFFIX=	-20181101
 CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -14,10 +14,11 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libguile-2.0.so:lang/guile2 \
 		libstroke.so:devel/libstroke \
-		libpng16.so:graphics/png
+		libpng16.so:graphics/png \
+		libgc-threaded.so:devel/boehm-gc-threaded
 
-USES=	autoreconf gettext desktop-file-utils shared-mime-info libtool \
-		pkgconfig pathfix python:run perl5 shebangfix makeinfo
+USES=	autoreconf desktop-file-utils shared-mime-info libtool \
+		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome
 
 USE_GITHUB=	yes
 
