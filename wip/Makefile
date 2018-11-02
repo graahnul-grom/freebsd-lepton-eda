@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.5
-DISTVERSIONSUFFIX=	-20180820
+PORTVERSION=	1.9.6
+DISTVERSIONSUFFIX=	-20181101
 CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -46,6 +46,7 @@ USES+=python:run
 USES+=perl5
 USES+=shebangfix
 USES+=makeinfo
+USES+=gnome
 
 USE_GITHUB=	yes
 
