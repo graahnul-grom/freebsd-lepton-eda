@@ -787,6 +787,7 @@ share/icons/hicolor/scalable/mimetypes/application-x-lepton-symbol.svg
 %%DATADIR%%/scheme/netlist/attrib/compare.scm
 %%DATADIR%%/scheme/netlist/backend-getopt.scm
 %%DATADIR%%/scheme/netlist/config.scm
+%%DATADIR%%/scheme/netlist/error.scm
 %%DATADIR%%/scheme/netlist/core/gettext.scm
 %%DATADIR%%/scheme/netlist/hierarchy.scm
 %%DATADIR%%/scheme/netlist/net.scm
