@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.5
-DISTVERSIONSUFFIX=	-20180820
+PORTVERSION=	1.9.6
+DISTVERSIONSUFFIX=	-20181101
 CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -31,12 +31,16 @@ NLS_USES=	gettext
 LIB_DEPENDS+=libfontconfig.so:x11-fonts/fontconfig
 LIB_DEPENDS+=libfreetype.so:print/freetype2
 LIB_DEPENDS+=libguile-2.0.so:lang/guile2
-# LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
+#
+# 'make stage' warns that libgc-threaded.so.1
+#   is required by lepton-attrib:
+#
+LIB_DEPENDS+=libgc-threaded.so:devel/boehm-gc-threaded
 LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
 USES+=autoreconf
-USES+=gettext
+# USES+=gettext # comment out. warning was: either use it in USES or NLS_USES
 USES+=desktop-file-utils
 USES+=shared-mime-info
 USES+=libtool
@@ -46,6 +50,7 @@ USES+=python:run
 USES+=perl5
 USES+=shebangfix
 USES+=makeinfo
+USES+=gnome
 
 USE_GITHUB=	yes
 
