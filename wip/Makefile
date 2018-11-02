@@ -36,7 +36,7 @@ LIB_DEPENDS+=libstroke.so:devel/libstroke
 LIB_DEPENDS+=libpng16.so:graphics/png
 
 USES+=autoreconf
-USES+=gettext
+# USES+=gettext # comment out. warning was: either use it in USES or NLS_USES
 USES+=desktop-file-utils
 USES+=shared-mime-info
 USES+=libtool
