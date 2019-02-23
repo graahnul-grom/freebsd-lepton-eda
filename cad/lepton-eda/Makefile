@@ -18,7 +18,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgc-threaded.so:devel/boehm-gc-threaded
 
 USES=	autoreconf desktop-file-utils shared-mime-info libtool \
-		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome
+		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome \
+		groff:build
 
 USE_GITHUB=	yes
 
