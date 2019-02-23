@@ -58,6 +58,30 @@ NLS_CONFIGURE_ENABLE=	nls
 #
 NLS_USES=	gettext
 
+# work around for errors while running
+# build-tools/icon-theme-installer:
+#
+# Cannot find 'install -m 0644'; You probably want to pass -x $(INSTALL_DATA)
+#
+# for 3 dirs (attrib/data, liblepton/data, schematic/data)
+# the following lines should be in the generated Makefile:
+#
+# INSTALL = /usr/bin/install -c
+# INSTALL_DATA = ${INSTALL} -m 644
+# INSTALL_PROGRAM = ${INSTALL}
+# INSTALL_SCRIPT = ${INSTALL}
+#
+# but instead you got:
+#
+# INSTALL = /usr/bin/install -c
+# INSTALL_DATA = install  -m 0644
+# INSTALL_PROGRAM = install  -s -m 555
+# INSTALL_SCRIPT = install  -m 555
+#
+# this is so only when building a port (when building from
+# git sources and install to the home folder, there are
+# no errors)
+#
 pre-build:
 	${REINPLACE_CMD} \
 		-e 's,^\(INSTALL_DATA = \)install\(.*\),\1$${INSTALL}\2,' \
