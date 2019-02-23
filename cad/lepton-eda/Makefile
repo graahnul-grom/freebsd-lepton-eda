@@ -39,14 +39,16 @@ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 		contrib/scripts/pads_backannotate \
 		contrib/scripts/sarlacc_sym
 
+PORTEXAMPLES=	examples/*
+
 GNU_CONFIGURE=	yes
 
 INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
 
-OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_DEFAULT=	DOCS NLS
+OPTIONS_DEFINE=	DOCS NLS EXAMPLES
+OPTIONS_DEFAULT=	DOCS NLS EXAMPLES
 
 OPTIONS_SUB=	yes
 
