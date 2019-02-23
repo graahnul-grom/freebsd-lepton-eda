@@ -41,9 +41,6 @@ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 
 GNU_CONFIGURE=	yes
 
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
-DATADIR=	${PREFIX}/share/${PORTNAME}
-
 INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
