@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=	autoreconf desktop-file-utils shared-mime-info libtool \
 		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome \
-		groff:build
+		groff:build localbase localbase:ldflags
 
 USE_GITHUB=	yes
 
@@ -40,9 +40,6 @@ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 		contrib/scripts/sarlacc_sym
 
 GNU_CONFIGURE=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
 DATADIR=	${PREFIX}/share/${PORTNAME}
