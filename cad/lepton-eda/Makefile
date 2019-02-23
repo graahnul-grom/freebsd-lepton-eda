@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=	autoreconf desktop-file-utils shared-mime-info libtool \
 		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome \
-		groff:build localbase localbase:ldflags
+		groff:build localbase localbase:ldflags gettext
 
 USE_GITHUB=	yes
 
@@ -53,6 +53,9 @@ OPTIONS_DEFAULT=	DOCS NLS EXAMPLES
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls
+
+# we use gettext anyway, so just to make portlint happy:
+#
 NLS_USES=	gettext
 
 pre-build:
