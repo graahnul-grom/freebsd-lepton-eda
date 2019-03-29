@@ -1,4 +1,4 @@
-# $FreeBSD$
+# $FreeBSD: head/cad/lepton-eda/Makefile 493674 2019-02-23 13:49:27Z tobik $
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.7
@@ -12,18 +12,16 @@ LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libgc-threaded.so:devel/boehm-gc-threaded \
 		libguile-2.0.so:lang/guile2 \
-		libstroke.so:devel/libstroke \
-		libpng16.so:graphics/png \
-		libgc-threaded.so:devel/boehm-gc-threaded
+		libpng.so:graphics/png \
+		libstroke.so:devel/libstroke
 
-USES=	autoreconf desktop-file-utils shared-mime-info libtool \
-		pkgconfig pathfix python:run perl5 shebangfix makeinfo gnome \
-		groff:build localbase gettext-tools
-
+USES=		autoreconf desktop-file-utils gettext-tools gnome groff:build \
+		libtool localbase makeinfo pathfix perl5 pkgconfig python:run \
+		shared-mime-info shebangfix
 USE_GITHUB=	yes
-
-USE_GNOME=	gtk20 cairo
+USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	utils/scripts/lepton-tragesym \
@@ -42,18 +40,17 @@ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 PORTEXAMPLES=	examples/*
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
-
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls
-
-NLS_USES=	gettext-runtime
+NLS_USES=		gettext-runtime
 
 # work around for errors while running
 # build-tools/icon-theme-installer:
