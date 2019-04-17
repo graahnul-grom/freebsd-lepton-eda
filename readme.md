@@ -23,6 +23,8 @@ To build this port on FreeBSD 13.0-CURRENT, you have to apply patch from the
 <br />
 which is now awaiting committer's approval.
 <br />
+**UPDATE**: the patch was accepted.
+<br />
 
 How to install
 --------------
