@@ -1,4 +1,4 @@
-# $FreeBSD: head/cad/lepton-eda/Makefile 499146 2019-04-17 05:58:06Z pi $
+# $FreeBSD$
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.7
@@ -57,13 +57,11 @@ NLS_USES=		gettext-runtime
 #
 # Cannot find 'install -m 0644'; You probably want to pass -x ${INSTALL_DATA}
 #
-#
-# NOTE: in the error message above (I wanted to show it
-# verbatim), INSTALL_DATA actually is enclosed in
-# parenthesis, not in curly brackets.
-# I had to change it to appease portlint(1), which does
-# not ignore comments in makefiles.
-#
+#   NOTE: in the error message above (I wanted to show it
+#   verbatim), INSTALL_DATA actually is enclosed in
+#   parenthesis, not in curly brackets.
+#   I had to change it to appease portlint(1), which does
+#   not ignore comments in makefiles.
 #
 # for 3 dirs (attrib/data, liblepton/data, schematic/data)
 # the following lines should be in the generated Makefile:
