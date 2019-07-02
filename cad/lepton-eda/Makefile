@@ -3,6 +3,7 @@
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.7
 DISTVERSIONSUFFIX=	-20181211
+PORTREVISION=	2
 CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -13,7 +14,7 @@ LICENSE=	GPLv2+
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgc-threaded.so:devel/boehm-gc-threaded \
-		libguile-2.0.so:lang/guile2 \
+		libguile-2.2.so:lang/guile2 \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke
 
