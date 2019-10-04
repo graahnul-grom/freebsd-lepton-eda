@@ -2,8 +2,8 @@
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.7
+PORTREVISION=	3
 DISTVERSIONSUFFIX=	-20181211
-PORTREVISION=	2
 CATEGORIES=	cad
 
 MAINTAINER=	graahnul.grom@gmail.com
@@ -18,9 +18,9 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke
 
-USES=		autoreconf desktop-file-utils gettext-tools gnome groff:build \
-		libtool localbase makeinfo pathfix perl5 pkgconfig python:2.7,run \
-		shared-mime-info shebangfix
+USES=		autoreconf desktop-file-utils gettext-tools gnome \
+		groff:build libtool localbase makeinfo pathfix perl5 \
+		pkgconfig python:2.7,run shared-mime-info shebangfix
 USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
