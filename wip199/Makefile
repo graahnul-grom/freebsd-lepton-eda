@@ -26,7 +26,6 @@ USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 		utils/scripts/lepton-archive.py \
-		utils/gxyrs/lepton-xyrs.pl \
 		utils/scripts/gschupdate \
 		utils/scripts/gsymupdate \
 		utils/scripts/lepton-pcb_backannotate \
