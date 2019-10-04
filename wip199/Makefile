@@ -45,6 +45,11 @@ INSTALLS_ICONS=	yes
 
 INFO=	lepton-scheme
 
+# package creation fails with parallel make:
+# Scheme API html files are not generated
+#
+MAKE_JOBS_UNSAFE=	yes
+
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
 
