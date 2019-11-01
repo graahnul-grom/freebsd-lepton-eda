@@ -11,6 +11,11 @@ Current version: [1.9.7](https://github.com/lepton-eda/lepton-eda/releases/tag/1
 News
 ----
 
+A patch for Lepton EDA release [1.9.9](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.9-20191003)
+has been [submitted](https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=241289).
+<br />
+See the [`release199` branch](https://github.com/graahnul-grom/freebsd-lepton-eda/tree/release199).
+
 Lepton EDA is a [part](https://svnweb.freebsd.org/ports/head/cad/lepton-eda) of the
 FreeBSD [Ports Collection](https://www.freebsd.org/ports/index.html) (as of Feb 23rd, 2019).
 <br />
