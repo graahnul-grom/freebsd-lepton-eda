@@ -31,10 +31,7 @@ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
 		utils/scripts/lepton-pcb_backannotate \
 		utils/scripts/lepton-refdes_renum \
 		utils/scripts/lepton-symfix \
-		examples/lightning_detector/bom \
-		contrib/scripts/mk_char_tab.pl \
-		contrib/scripts/pads_backannotate \
-		contrib/scripts/sarlacc_sym
+		examples/lightning_detector/bom
 
 PORTEXAMPLES=	examples/*
 
