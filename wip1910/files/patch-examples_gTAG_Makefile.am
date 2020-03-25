@@ -1,0 +1,8 @@
+--- examples/gTAG/Makefile.am.orig	2020-03-25 05:48:01 UTC
++++ examples/gTAG/Makefile.am
+@@ -1,4 +1,4 @@
+-exampledir = $(docdir)/examples/gTAG/
++exampledir = $(datadir)/examples/lepton-eda/gTAG/
+ 
+ nobase_example_DATA = \
+ 	attribs \
