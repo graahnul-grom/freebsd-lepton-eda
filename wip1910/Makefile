@@ -43,4 +43,13 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
 
+post-patch:
+	${REINPLACE_CMD} -e \
+		's,\$$(docdir)/examples,\$$(datadir)/examples/lepton-eda,' \
+		${WRKSRC}/examples/Makefile.am \
+		${WRKSRC}/examples/RF_Amp/Makefile.am \
+		${WRKSRC}/examples/TwoStageAmp/Makefile.am \
+		${WRKSRC}/examples/gTAG/Makefile.am \
+		${WRKSRC}/examples/lightning_detector/Makefile.am
+
 .include <bsd.port.mk>
