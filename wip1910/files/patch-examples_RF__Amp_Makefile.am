@@ -1,0 +1,8 @@
+--- examples/RF_Amp/Makefile.am.orig	2020-03-25 05:47:36 UTC
++++ examples/RF_Amp/Makefile.am
+@@ -1,4 +1,4 @@
+-exampledir = $(docdir)/examples/RF_Amp/
++exampledir = $(datadir)/examples/lepton-eda/RF_Amp/
+ 
+ nobase_example_DATA = \
+ 	5980-2396E.pdf \
