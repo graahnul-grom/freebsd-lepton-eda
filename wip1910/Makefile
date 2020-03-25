@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		autoreconf desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
-		pkgconfig python:2.7,run shared-mime-info shebangfix
+		pkgconfig shared-mime-info shebangfix
 USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
