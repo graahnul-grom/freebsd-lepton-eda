@@ -24,14 +24,9 @@ USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=	utils/scripts/lepton-tragesym \
-		utils/scripts/lepton-archive.py \
-		utils/scripts/gschupdate \
-		utils/scripts/gsymupdate \
-		utils/scripts/lepton-pcb_backannotate \
+SHEBANG_FILES=	utils/scripts/lepton-pcb_backannotate \
 		utils/scripts/lepton-refdes_renum \
-		utils/scripts/lepton-symfix \
-		examples/lightning_detector/bom
+		utils/scripts/lepton-symfix
 
 PORTEXAMPLES=	examples/*
 
