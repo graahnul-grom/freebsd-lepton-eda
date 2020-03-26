@@ -11,6 +11,11 @@ See the [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md) fil
 News
 ----
 
+Lepton EDA 1.9.10 has been released.<br />
+Patch to update the port has been submitted:<br />
+[bug #245068: cad/lepton-eda: Update to 1.9.10](https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=245068)
+<br />
+
 Version 1.9.9 of the Lepton EDA suite is now in the Ports Collection ( submitted on January, 1st, 2020 :) )
 <br />
 Happy New Year!
