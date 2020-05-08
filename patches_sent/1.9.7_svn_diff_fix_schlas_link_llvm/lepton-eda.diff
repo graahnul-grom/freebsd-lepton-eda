@@ -1,0 +1,53 @@
+Index: cad/lepton-eda/Makefile
+===================================================================
+--- cad/lepton-eda/Makefile	(revision 497721)
++++ cad/lepton-eda/Makefile	(working copy)
+@@ -55,8 +55,16 @@
+ # work around for errors while running
+ # build-tools/icon-theme-installer:
+ #
+-# Cannot find 'install -m 0644'; You probably want to pass -x $(INSTALL_DATA)
++# Cannot find 'install -m 0644'; You probably want to pass -x ${INSTALL_DATA}
+ #
++#
++# NOTE: in the error message above (I wanted to show it
++# verbatim), INSTALL_DATA actually is enclosed in
++# parenthesis, not in curly brackets.
++# I had to change it to appease portlint(1), which does
++# not ignore comments in makefiles.
++#
++#
+ # for 3 dirs (attrib/data, liblepton/data, schematic/data)
+ # the following lines should be in the generated Makefile:
+ #
+Index: cad/lepton-eda/files/patch-utils_gschlas_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-utils_gschlas_Makefile.am	(nonexistent)
++++ cad/lepton-eda/files/patch-utils_gschlas_Makefile.am	(working copy)
+@@ -0,0 +1,11 @@
++--- utils/gschlas/Makefile.am.orig	2018-12-11 19:24:41 UTC
+++++ utils/gschlas/Makefile.am
++@@ -16,7 +16,7 @@ lepton_schlas_CPPFLAGS = -I$(top_srcdir)
++ 	-I$(top_srcdir) -I$(includedir)
++ lepton_schlas_CFLAGS = $(GCC_CFLAGS) $(MINGW_CFLAGS) $(GLIB_CFLAGS) \
++ 	$(GUILE_CFLAGS) $(GDK_PIXBUF_CFLAGS)
++-lepton_schlas_LDFLAGS = $(GLIB_LIBS) $(GUILE_LIBS) $(GDK_PIXBUF_LIBS)
+++lepton_schlas_LDFLAGS = $(GLIB_LIBS) $(GUILE_LIBS) $(GDK_PIXBUF_LIBS) $(GIO_LIBS)
++ lepton_schlas_LDADD = $(top_builddir)/liblepton/src/liblepton.la
++ 
++ MOSTLYCLEANFILES = *.log *.ps core FILE *~
+
+Property changes on: cad/lepton-eda/files/patch-utils_gschlas_Makefile.am
+___________________________________________________________________
+Added: fbsd:nokeywords
+## -0,0 +1 ##
++yes
+\ No newline at end of property
+Added: svn:eol-style
+## -0,0 +1 ##
++native
+\ No newline at end of property
+Added: svn:mime-type
+## -0,0 +1 ##
++text/plain
+\ No newline at end of property

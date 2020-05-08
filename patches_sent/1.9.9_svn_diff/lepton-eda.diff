@@ -1,0 +1,1385 @@
+Index: cad/lepton-eda/Makefile
+===================================================================
+--- cad/lepton-eda/Makefile	(revision 514328)
++++ cad/lepton-eda/Makefile	(working copy)
+@@ -1,9 +1,8 @@
+ # $FreeBSD$
+ 
+ PORTNAME=	lepton-eda
+-PORTVERSION=	1.9.7
+-PORTREVISION=	3
+-DISTVERSIONSUFFIX=	-20181211
++PORTVERSION=	1.9.9
++DISTVERSIONSUFFIX=	-20191003
+ CATEGORIES=	cad
+ 
+ MAINTAINER=	graahnul.grom@gmail.com
+@@ -27,7 +26,6 @@
+ 
+ SHEBANG_FILES=	utils/scripts/lepton-tragesym \
+ 		utils/scripts/lepton-archive.py \
+-		utils/gxyrs/lepton-xyrs.pl \
+ 		utils/scripts/gschupdate \
+ 		utils/scripts/gsymupdate \
+ 		utils/scripts/lepton-pcb_backannotate \
+@@ -53,43 +51,4 @@
+ NLS_CONFIGURE_ENABLE=	nls
+ NLS_USES=		gettext-runtime
+ 
+-# work around for errors while running
+-# build-tools/icon-theme-installer:
+-#
+-# Cannot find 'install -m 0644'; You probably want to pass -x ${INSTALL_DATA}
+-#
+-#   NOTE: in the error message above (I wanted to show it
+-#   verbatim), INSTALL_DATA actually is enclosed in
+-#   parenthesis, not in curly brackets.
+-#   I had to change it to appease portlint(1), which does
+-#   not ignore comments in makefiles.
+-#
+-# for 3 dirs (attrib/data, liblepton/data, schematic/data)
+-# the following lines should be in the generated Makefile:
+-#
+-# INSTALL = /usr/bin/install -c
+-# INSTALL_DATA = ${INSTALL} -m 644
+-# INSTALL_PROGRAM = ${INSTALL}
+-# INSTALL_SCRIPT = ${INSTALL}
+-#
+-# but instead you got:
+-#
+-# INSTALL = /usr/bin/install -c
+-# INSTALL_DATA = install  -m 0644
+-# INSTALL_PROGRAM = install  -s -m 555
+-# INSTALL_SCRIPT = install  -m 555
+-#
+-# this is so only when building a port (when building from
+-# git sources and install to the home folder, there are
+-# no errors)
+-#
+-pre-build:
+-	${REINPLACE_CMD} \
+-		-e 's,^\(INSTALL_DATA = \)install\(.*\),\1$${INSTALL}\2,' \
+-		-e 's,^\(INSTALL_PROGRAM = \)install\(.*\),\1$${INSTALL}\2,' \
+-		-e 's,^\(INSTALL_SCRIPT = \)install\(.*\),\1$${INSTALL}\2,' \
+-		${WRKSRC}/attrib/data/Makefile \
+-		${WRKSRC}/liblepton/data/Makefile \
+-		${WRKSRC}/schematic/data/Makefile
+-
+ .include <bsd.port.mk>
+Index: cad/lepton-eda/distinfo
+===================================================================
+--- cad/lepton-eda/distinfo	(revision 514328)
++++ cad/lepton-eda/distinfo	(working copy)
+@@ -1,3 +1,3 @@
+-TIMESTAMP = 1544669359
+-SHA256 (lepton-eda-lepton-eda-1.9.7-20181211_GH0.tar.gz) = dd62e038e57c6223b2575da5ab68628a5df3387c2cf312eecba689536fdf41bb
+-SIZE (lepton-eda-lepton-eda-1.9.7-20181211_GH0.tar.gz) = 8636846
++TIMESTAMP = 1570203233
++SHA256 (lepton-eda-lepton-eda-1.9.9-20191003_GH0.tar.gz) = 13448d91ae17ab8c5e5cbba56c5a4e6a7cc3b3cb392280cb4d218f50891469d7
++SIZE (lepton-eda-lepton-eda-1.9.9-20191003_GH0.tar.gz) = 8361951
+Index: cad/lepton-eda/files/patch-build-tools_icon-theme-installer
+===================================================================
+--- cad/lepton-eda/files/patch-build-tools_icon-theme-installer	(nonexistent)
++++ cad/lepton-eda/files/patch-build-tools_icon-theme-installer	(working copy)
+@@ -0,0 +1,20 @@
++--- build-tools/icon-theme-installer.orig	2019-10-03 20:45:55 UTC
+++++ build-tools/icon-theme-installer
++@@ -103,13 +103,13 @@ if test -z "$INSTALL_BASE_DIR"; then
++ 	exit 1
++ fi
++ 
++-if test ! -x `echo "$MKINSTALLDIRS_EXEC" | cut -f1 -d' '`; then
++-	echo "Cannot find '$MKINSTALLDIRS_EXEC'; You probably want to pass -m \$(mkinstalldirs)"
+++if test -z "$MKINSTALLDIRS_EXEC"; then
+++	echo "\$MKINSTALLDIRS_EXEC is not set. Pass it with the -m command line option"
++ 	exit 1
++ fi
++ 
++-if test ! -x `echo "$INSTALL_DATA_EXEC" | cut -f1 -d' '`; then
++-	echo "Cannot find '$INSTALL_DATA_EXEC'; You probably want to pass -x \$(INSTALL_DATA)"
+++if test -z "$INSTALL_DATA_EXEC"; then
+++	echo "\$INSTALL_DATA_EXEC' is not set. Pass it with the -x command line option"
++ 	exit 1
++ fi
++ 
+
+Property changes on: cad/lepton-eda/files/patch-build-tools_icon-theme-installer
+___________________________________________________________________
+Added: fbsd:nokeywords
+## -0,0 +1 ##
++yes
+\ No newline at end of property
+Added: svn:eol-style
+## -0,0 +1 ##
++native
+\ No newline at end of property
+Added: svn:mime-type
+## -0,0 +1 ##
++text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-cli_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-cli_Makefile.am	(revision 514328)
++++ cad/lepton-eda/files/patch-cli_Makefile.am	(nonexistent)
+@@ -1,11 +0,0 @@
+---- cli/Makefile.am.orig	2019-07-19 17:10:25 UTC
+-+++ cli/Makefile.am
+-@@ -28,7 +28,7 @@ lepton_cli_CPPFLAGS = \
+- lepton_cli_CFLAGS = \
+- 	$(GCC_CFLAGS) $(MINGW_CFLAGS) $(GUILE_CFLAGS) $(GTK_CFLAGS) \
+- 	$(GDK_PIXBUF_CFLAGS) $(CAIRO_CFLAGS) $(CAIRO_PNG_CFLAGS) \
+--	$(CAIRO_PDF_CLAGS) $(CAIRO_PS_CFLAGS) $(CAIRO_SVG_CFLAGS)
+-+	$(CAIRO_PDF_CLAGS) $(CAIRO_PS_CFLAGS) $(CAIRO_SVG_CFLAGS) $(CFLAGS)
+- lepton_cli_LDFLAGS = $(GUILE_LIBS) $(GTK_LIBS) $(GDK_PIXBUF_LIBS) $(CAIRO_LIBS) \
+- 	$(CAIRO_PNG_LIBS) $(CAIRO_PDF_CLAGS) $(CAIRO_PS_LIBS) $(CAIRO_SVG_LIBS)
+- lepton_cli_LDADD = \
+
+Property changes on: cad/lepton-eda/files/patch-cli_Makefile.am
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-docs_scheme-api_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-docs_scheme-api_Makefile.am	(nonexistent)
++++ cad/lepton-eda/files/patch-docs_scheme-api_Makefile.am	(working copy)
+@@ -0,0 +1,14 @@
++--- docs/scheme-api/Makefile.am.orig	2019-10-09 16:39:51 UTC
+++++ docs/scheme-api/Makefile.am
++@@ -4,10 +4,8 @@ AM_MAKEINFOHTMLFLAGS = --css-ref=lepton-
++ 
++ EXTRA_DIST = lepton-scheme.css
++ 
++-html-local:
+++all: all-am html
++ 	$(MKDIR_P) $(builddir)/lepton-scheme.html/
++ 	cp -fv $(srcdir)/lepton-scheme.css $(builddir)/lepton-scheme.html/
++ 
++-all-local: html
++-
++ install-data-local: install-html
+
+Property changes on: cad/lepton-eda/files/patch-docs_scheme-api_Makefile.am
+___________________________________________________________________
+Added: fbsd:nokeywords
+## -0,0 +1 ##
++yes
+\ No newline at end of property
+Added: svn:eol-style
+## -0,0 +1 ##
++native
+\ No newline at end of property
+Added: svn:mime-type
+## -0,0 +1 ##
++text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-liblepton_src_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-liblepton_src_Makefile.am	(revision 514328)
++++ cad/lepton-eda/files/patch-liblepton_src_Makefile.am	(nonexistent)
+@@ -1,11 +0,0 @@
+---- liblepton/src/Makefile.am.orig	2019-07-19 16:53:37 UTC
+-+++ liblepton/src/Makefile.am
+-@@ -99,7 +99,7 @@ liblepton_la_CPPFLAGS = -DLOCALEDIR=\"$(localedir)\"  
+- 	-I$(srcdir)/../include -I$(srcdir)/../include/liblepton -I$(top_srcdir)
+- liblepton_la_CFLAGS = \
+- 	$(GCC_CFLAGS) $(MINGW_CFLAGS) $(GUILE_CFLAGS) $(GLIB_CFLAGS) \
+--	$(GDK_PIXBUF_CFLAGS)
+-+	$(GDK_PIXBUF_CFLAGS) $(CFLAGS)
+- liblepton_la_LDFLAGS = -version-info $(LIBLEPTON_SHLIB_VERSION) \
+- 	$(WINDOWS_LIBTOOL_FLAGS) $(MINGW_LDFLAGS) $(GUILE_LIBS) \
+- 	$(GLIB_LIBS) $(GDK_PIXBUF_LIBS)
+
+Property changes on: cad/lepton-eda/files/patch-liblepton_src_Makefile.am
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-m4_geda-guile.m4
+===================================================================
+--- cad/lepton-eda/files/patch-m4_geda-guile.m4	(revision 514328)
++++ cad/lepton-eda/files/patch-m4_geda-guile.m4	(nonexistent)
+@@ -1,26 +0,0 @@
+---- m4/geda-guile.m4.orig	2018-12-11 19:24:41 UTC
+-+++ m4/geda-guile.m4
+-@@ -34,9 +34,20 @@ AC_DEFUN([AX_CHECK_GUILE],
+-   GUILE_MIN_MINOR=`echo ${GUILE_MIN_VER} | sed -e 's;[[^\.]]*\.;;' -e 's;\..*;;g'`
+-   GUILE_MIN_TEENY=`echo ${GUILE_MIN_VER} | sed -e 's;.*\.;;'`
+- 
+--  PKG_CHECK_MODULES(GUILE, [guile-2.0 >= $GUILE_MIN_VER],
+--                           [GUILE_PKG_NAME=guile-2.0],
+--                           [AC_MSG_ERROR([you need at least version ${GUILE_MIN_VER} of guile])])
+-+  _found_pkg_config_guile=yes
+-+  PKG_CHECK_MODULES(GUILE, [guile-2.2 >= $GUILE_MIN_VER],
+-+                           [GUILE_PKG_NAME=guile-2.2], [_found_pkg_config_guile=no])
+-+
+-+  if test "${_found_pkg_config_guile}" = "no" ; then
+-+   PKG_CHECK_MODULES(GUILE, [guile-2.0 >= $GUILE_MIN_VER],
+-+                            [_found_pkg_config_guile=yes
+-+                             GUILE_PKG_NAME=guile-2.0],
+-+                            [_found_pkg_config_guile=no])
+-+  fi
+-+
+-+  if test "${_found_pkg_config_guile}" = "no" ; then
+-+    AC_MSG_ERROR([you need at least version ${GUILE_MIN_VER} of guile])
+-+  fi
+- 
+-   AC_SUBST([GUILE_PKG_NAME])
+- 
+
+Property changes on: cad/lepton-eda/files/patch-m4_geda-guile.m4
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Deleted: svn:eol-style
+## -1 +0,0 ##
+-native
+\ No newline at end of property
+Deleted: svn:mime-type
+## -1 +0,0 ##
+-text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-netlist_scheme_backend_gnet-spice-sdb.scm
+===================================================================
+--- cad/lepton-eda/files/patch-netlist_scheme_backend_gnet-spice-sdb.scm	(nonexistent)
++++ cad/lepton-eda/files/patch-netlist_scheme_backend_gnet-spice-sdb.scm	(working copy)
+@@ -0,0 +1,11 @@
++--- netlist/scheme/backend/gnet-spice-sdb.scm.orig	2019-10-03 20:45:55 UTC
+++++ netlist/scheme/backend/gnet-spice-sdb.scm
++@@ -209,7 +209,7 @@
++     (and (string-ci=? (gnetlist:get-package-attribute package "device")
++                       "spice-io")
++          package))
++-  (filter-map spice-io? ls))
+++  (filter-map spice-io? package-list))
++ 
++ 
++ ;;; Given a list of spice-IO packages (refdeses), this function
+
+Property changes on: cad/lepton-eda/files/patch-netlist_scheme_backend_gnet-spice-sdb.scm
+___________________________________________________________________
+Added: fbsd:nokeywords
+## -0,0 +1 ##
++yes
+\ No newline at end of property
+Added: svn:eol-style
+## -0,0 +1 ##
++native
+\ No newline at end of property
+Added: svn:mime-type
+## -0,0 +1 ##
++text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-schematic_scheme_gschem_action.scm
+===================================================================
+--- cad/lepton-eda/files/patch-schematic_scheme_gschem_action.scm	(revision 514328)
++++ cad/lepton-eda/files/patch-schematic_scheme_gschem_action.scm	(nonexistent)
+@@ -1,102 +0,0 @@
+---- schematic/scheme/gschem/action.scm.orig	2018-12-11 19:24:41 UTC
+-+++ schematic/scheme/gschem/action.scm
+-@@ -1,6 +1,7 @@
+- ;; Lepton EDA Schematic Capture
+- ;; Scheme API
+- ;; Copyright (C) 2013 Peter Brett <peter@peter-b.co.uk>
+-+;; Copyright (C) 2017-2019 Lepton EDA Contributors
+- ;;
+- ;; This program is free software; you can redistribute it and/or modify
+- ;; it under the terms of the GNU General Public License as published by
+-@@ -21,11 +22,10 @@
+-   #:use-module (gschem core gettext)
+-   #:use-module (gschem window)
+-   #:use-module (gschem hook)
+-+  #:use-module (geda log)
+-   #:use-module (ice-9 optargs)
+-   #:export-syntax (define-action))
+- 
+--(or (defined? 'define-syntax)
+--    (use-modules (ice-9 syncase)))
+- 
+- (define last-action (make-fluid))
+- (define current-action-position (make-fluid))
+-@@ -33,18 +33,25 @@
+- ;; Define an eval-in-currentmodule procedure
+- (define (eval-cm expr) (eval expr (current-module)))
+- 
+--;; Evaluates a gschem action.  A gschem action is expected to be a
+-+;; Evaluates a lepton-schematic action.  An action is expected to be a
+- ;; symbol naming a thunk variable in the current module.
+- ;;
+- ;; The special-case symbol repeat-last-command causes the last action
+- ;; executed to be repeated.
+- (define-public (eval-action! action)
+-   (define (invalid-action-error)
+--    (error (_ "~S is not a valid gschem action.") action))
+-+    (log! 'warning (_ "[~A] is not a valid lepton-schematic action.") action))
+-+  (define (no-last-action-error)
+-+    (log! 'message (_ "There is no last action to repeat.")))
+- 
+-   (define (eval-action!/recursive a)
+- 
+-     (cond
+-+     ;; The action is #f when the user hits "." (repeat last action)
+-+     ;; and there is no last action to repeat.
+-+     ((eq? a #f)
+-+      (no-last-action-error))
+-+
+-      ;; Handle repeat-last-command
+-      ((equal? 'repeat-last-command a)
+-       ;; N.b. must call eval-action! rather than
+-@@ -107,29 +114,30 @@
+-   ;; The action is a magical procedure that does nothing but call
+-   ;; eval-action! *on itself*.  This allows you to invoke an action
+-   ;; just by calling it like a normal function.
+--  (letrec ((action (lambda () (eval-action! action))))
+-+  (let ((unique-tag (list #f)))
+-+    (letrec ((action (case-lambda
+-+                       (() (eval-action! action))
+-+                       ((x) unique-tag))))
+- 
+--    ;; The action data is stored in procedure properties -- most
+--    ;; importantly, the actual thunk that the action wraps
+--    (let ((sp! (lambda (k v) (set-procedure-property! action k v))))
+--      (sp! 'gschem-cookie %cookie)
+--      (sp! 'gschem-thunk thunk)
+--      (sp! 'gschem-properties '()))
+-+      ;; The action data is stored in procedure properties -- most
+-+      ;; importantly, the actual thunk that the action wraps
+-+      (let ((sp! (lambda (k v) (set-procedure-property! action k v))))
+-+        (sp! 'gschem-cookie %cookie)
+-+        (sp! 'gschem-thunk thunk)
+-+        (sp! 'gschem-properties '()))
+- 
+--    ;; Deal with any properties.  props should contain arguments in
+--    ;; pairs, where the first element of each pair is a keyword naming
+--    ;; a procedure property (e.g. #:icon) and the second element in
+--    ;; the corresponding value (e.g. "insert-text").
+--    (let loop ((lst props))
+--      (and (< 1 (length lst))
+--           (set-action-property! action
+--                                 (keyword->symbol (list-ref lst 0))
+--                                 (list-ref lst 1))
+--           (loop (list-tail lst 2))))
+--          
+--          
+-+      ;; Deal with any properties.  props should contain arguments in
+-+      ;; pairs, where the first element of each pair is a keyword naming
+-+      ;; a procedure property (e.g. #:icon) and the second element in
+-+      ;; the corresponding value (e.g. "insert-text").
+-+      (let loop ((lst props))
+-+        (and (< 1 (length lst))
+-+             (set-action-property! action
+-+                                   (keyword->symbol (list-ref lst 0))
+-+                                   (list-ref lst 1))
+-+             (loop (list-tail lst 2))))
+- 
+--    action))
+-+      action)))
+- 
+- (define (action-thunk action)
+-   (procedure-property action 'gschem-thunk))
+
+Property changes on: cad/lepton-eda/files/patch-schematic_scheme_gschem_action.scm
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Deleted: svn:eol-style
+## -1 +0,0 ##
+-native
+\ No newline at end of property
+Deleted: svn:mime-type
+## -1 +0,0 ##
+-text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-schematic_src_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-schematic_src_Makefile.am	(revision 514328)
++++ cad/lepton-eda/files/patch-schematic_src_Makefile.am	(nonexistent)
+@@ -1,11 +0,0 @@
+---- schematic/src/Makefile.am.orig	2019-07-19 17:20:29 UTC
+-+++ schematic/src/Makefile.am
+-@@ -128,7 +128,7 @@ lepton_schematic_CPPFLAGS = -I$(top_srcdir)/liblepton/
+- 	-I$(top_srcdir) -I$(includedir)
+- lepton_schematic_CFLAGS = $(GCC_CFLAGS) $(LIBSTROKE_CFLAGS) \
+- 	$(MINGW_CFLAGS) \
+--	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GTHREAD_CFLAGS) $(GUILE_CFLAGS)
+-+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GTHREAD_CFLAGS) $(GUILE_CFLAGS) $(CFLAGS)
+- lepton_schematic_LDFLAGS = $(LIBSTROKE_LDFLAGS) $(GLIB_LIBS) $(GTK_LIBS) \
+- 	$(GTHREAD_LIBS) $(GUILE_LIBS) $(MINGW_GUI_LDFLAGS)
+- lepton_schematic_LDADD = \
+
+Property changes on: cad/lepton-eda/files/patch-schematic_src_Makefile.am
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-utils_gschlas_Makefile.am
+===================================================================
+--- cad/lepton-eda/files/patch-utils_gschlas_Makefile.am	(revision 514328)
++++ cad/lepton-eda/files/patch-utils_gschlas_Makefile.am	(nonexistent)
+@@ -1,11 +0,0 @@
+---- utils/gschlas/Makefile.am.orig	2018-12-11 19:24:41 UTC
+-+++ utils/gschlas/Makefile.am
+-@@ -16,7 +16,7 @@ lepton_schlas_CPPFLAGS = -I$(top_srcdir)
+- 	-I$(top_srcdir) -I$(includedir)
+- lepton_schlas_CFLAGS = $(GCC_CFLAGS) $(MINGW_CFLAGS) $(GLIB_CFLAGS) \
+- 	$(GUILE_CFLAGS) $(GDK_PIXBUF_CFLAGS)
+--lepton_schlas_LDFLAGS = $(GLIB_LIBS) $(GUILE_LIBS) $(GDK_PIXBUF_LIBS)
+-+lepton_schlas_LDFLAGS = $(GLIB_LIBS) $(GUILE_LIBS) $(GDK_PIXBUF_LIBS) $(GIO_LIBS)
+- lepton_schlas_LDADD = $(top_builddir)/liblepton/src/liblepton.la
+- 
+- MOSTLYCLEANFILES = *.log *.ps core FILE *~
+
+Property changes on: cad/lepton-eda/files/patch-utils_gschlas_Makefile.am
+___________________________________________________________________
+Deleted: fbsd:nokeywords
+## -1 +0,0 ##
+-yes
+\ No newline at end of property
+Deleted: svn:eol-style
+## -1 +0,0 ##
+-native
+\ No newline at end of property
+Deleted: svn:mime-type
+## -1 +0,0 ##
+-text/plain
+\ No newline at end of property
+Index: cad/lepton-eda/files/patch-version.h
+===================================================================
+--- cad/lepton-eda/files/patch-version.h	(revision 514328)
++++ cad/lepton-eda/files/patch-version.h	(working copy)
+@@ -1,11 +1,11 @@
+---- version.h.orig	2018-12-13 02:49:55 UTC
++--- version.h.orig	2019-10-04 15:45:44 UTC
+ +++ version.h
+ @@ -0,0 +1,8 @@
+ +/* Date part of package version string. */
+-+#define PACKAGE_DATE_VERSION "20181211"
+++#define PACKAGE_DATE_VERSION "20191003"
+ +
+ +/* Dotted part of package version string. */
+-+#define PACKAGE_DOTTED_VERSION "1.9.7"
+++#define PACKAGE_DOTTED_VERSION "1.9.9"
+ +
+ +/* Current git commit. */
+-+#define PACKAGE_GIT_COMMIT "f3a8714fdfd6dae491ebfff69f0fd9aa4899f9a6"
+++#define PACKAGE_GIT_COMMIT "3139e7782564ff4bf76963984a735fbe638e43a0"
+Index: cad/lepton-eda/pkg-plist
+===================================================================
+--- cad/lepton-eda/pkg-plist	(revision 514328)
++++ cad/lepton-eda/pkg-plist	(working copy)
+@@ -12,7 +12,7 @@
+ bin/lepton-symcheck
+ bin/lepton-symfix
+ bin/lepton-tragesym
+-bin/lepton-xyrs
++bin/lepton-upcfg
+ include/liblepton/defines.h
+ include/liblepton/edaconfig.h
+ include/liblepton/edaerrors.h
+@@ -68,11 +68,11 @@
+ include/libleptonrenderer/edarenderer.h
+ include/libleptonrenderer/libleptonrenderer.h
+ lib/liblepton.so
+-lib/liblepton.so.3
+-lib/liblepton.so.3.0.0
++lib/liblepton.so.4
++lib/liblepton.so.4.0.0
+ lib/libleptonrenderer.so
+ lib/libleptonrenderer.so.1
+-lib/libleptonrenderer.so.1.0.1
++lib/libleptonrenderer.so.1.0.2
+ libdata/pkgconfig/liblepton.pc
+ libdata/pkgconfig/libleptonrenderer.pc
+ man/man1/lepton-archive.1.gz
+@@ -89,74 +89,58 @@
+ man/man1/lepton-symcheck.1.gz
+ man/man1/lepton-symfix.1.gz
+ man/man1/lepton-tragesym.1.gz
+-man/man1/lepton-xyrs.1.gz
+ share/applications/lepton-attrib.desktop
+ share/applications/lepton-schematic.desktop
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/README
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/5980-2396E.pdf
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/MSA-2643.cir
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/MSA-2643.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q1.cir
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q1.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q2.cir
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q2.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/README
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Simulation.cmd
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/gafrc
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/BJTM1_Q1.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/BJTM1_Q2.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM1_Q1.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM1_Q2.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM2_Q1.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM2_Q2.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM3_Q1.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM3_Q2.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/BJT_Model.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/Q_Model.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/spice-subcircuit-IO-1.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/spice-subcircuit-LL-1.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/Simulation.cmd
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/TwoStageAmp.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/gafrc
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/models/2N3904.mod
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/spice.netlist
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/sym/transistor.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/7414-1.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/README
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/attribs
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/copyleft.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/crdist.sh
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/cy7c64603-52nc.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.ps
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.ps
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-pcb.net
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.ps
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.ps
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.bom
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.ps
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gafrc
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gnetlistrc
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/max882.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/sn75240pw.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/bom
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/bom.readme
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/gafrc
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.net
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.pcb
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.sch
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.sch.bom
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/sym/2N4401.sym
+-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/sym/2N4403.sym
+ %%PORTDOCS%%%%DOCSDIR%%/gedadocs.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/lepton-scheme.css
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Actions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Arcs.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Attributes.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Boxes.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Circles.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Component-objects.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Components.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Concept-Index.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Configuration-contexts.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Configuration-errors.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Configuration-events.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Configuration-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Configuration-parameters.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Coordinate-system.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Core-API-Reference.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Core-attribute-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Core-object-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Core-page-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Core-source-library-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Files-and-pages.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Function-Index.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/General-object-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Hooks.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/index.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Introduction.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Key-mapping.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/lepton_002dnetlist-API-Reference.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/lepton_002dschematic-API-Reference.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Lines.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Logging-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Miscellanous-lepton_002dschematic-functions.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Nets-and-buses.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Object-bounds.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Object-color.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Object-fill-and-stroke.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Objects.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Object-sub_002dtypes.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Object-transformations.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Pages.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Paths.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Pictures.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Pins.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Schematic-Document-Model.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Selections.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/System-information.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Text.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Variable-Index.html
++%%PORTDOCS%%%%DOCSDIR%%/lepton-scheme.html/Windows-and-views.html
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-archive.html
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-attrib.html
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-cli.html
+@@ -171,7 +155,6 @@
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-symcheck.html
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-symfix.html
+ %%PORTDOCS%%%%DOCSDIR%%/man/lepton-tragesym.html
+-%%PORTDOCS%%%%DOCSDIR%%/man/lepton-xyrs.html
+ %%PORTDOCS%%%%DOCSDIR%%/nc.pdf
+ %%PORTDOCS%%%%DOCSDIR%%/readmes/README.bom
+ %%PORTDOCS%%%%DOCSDIR%%/readmes/README.eagle
+@@ -631,6 +614,70 @@
+ %%PORTDOCS%%%%DOCSDIR%%/wiki/wiki-dokuvimki.ru.html
+ %%PORTDOCS%%%%DOCSDIR%%/wiki/wiki-dokuwiki.html
+ %%PORTDOCS%%%%DOCSDIR%%/wiki/wiki-syntax.html
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/README
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/5980-2396E.pdf
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/MSA-2643.cir
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/MSA-2643.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q1.cir
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q1.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q2.cir
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Q2.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/README
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/Simulation.cmd
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/gafrc
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/BJTM1_Q1.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/BJTM1_Q2.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM1_Q1.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM1_Q2.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM2_Q1.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM2_Q2.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM3_Q1.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/model/DiodeM3_Q2.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/BJT_Model.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/Q_Model.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/spice-subcircuit-IO-1.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RF_Amp/sym/spice-subcircuit-LL-1.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/Simulation.cmd
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/TwoStageAmp.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/gafrc
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/models/2N3904.mod
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/spice.netlist
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/TwoStageAmp/sym/transistor.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/7414-1.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/README
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/attribs
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/copyleft.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/crdist.sh
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/cy7c64603-52nc.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.ps
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-consio.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.ps
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-jtagio.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-pcb.net
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.ps
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-psu.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.ps
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG-ucont.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.bom
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.ps
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gTAG.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gafrc
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/gnetlistrc
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/max882.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/gTAG/sn75240pw.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/bom
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/bom.readme
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/gafrc
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.net
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.pcb
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.sch
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/lightning.sch.bom
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/sym/2N4401.sym
++%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lightning_detector/sym/2N4403.sym
+ share/icons/hicolor/16x16/mimetypes/application-x-lepton-sch2pcb-project.png
+ share/icons/hicolor/16x16/mimetypes/application-x-lepton-schematic.png
+ share/icons/hicolor/16x16/mimetypes/application-x-lepton-symbol.png
+@@ -691,8 +738,9 @@
+ %%DATADIR%%/bitmap/gschem-top2bottom.png
+ %%DATADIR%%/bitmap/gschem-undo.xpm
+ %%DATADIR%%/bitmap/gschem-warning.png
++%%DATADIR%%/gafrc.d/config-netlist.scm
+ %%DATADIR%%/gafrc.d/geda-clib.scm
+-%%DATADIR%%/gattrib-menus.xml
++%%DATADIR%%/geda-system.conf
+ %%DATADIR%%/gschem-colormap-bw
+ %%DATADIR%%/gschem-colormap-darkbg
+ %%DATADIR%%/gschem-colormap-lightbg
+@@ -723,7 +771,7 @@
+ %%DATADIR%%/icons/hicolor/22x22/actions/insert-symbol.png
+ %%DATADIR%%/icons/hicolor/22x22/actions/insert-text.png
+ %%DATADIR%%/icons/hicolor/22x22/actions/select.png
+-%%DATADIR%%/perl/lib/xyrs.pm
++%%DATADIR%%/lepton-system.conf
+ %%DATADIR%%/print-colormap-darkbg
+ %%DATADIR%%/print-colormap-lightbg
+ %%DATADIR%%/scheme/auto-place-attribs.scm
+@@ -730,7 +778,51 @@
+ %%DATADIR%%/scheme/auto-place-netname.scm
+ %%DATADIR%%/scheme/auto-refdes.scm
+ %%DATADIR%%/scheme/auto-uref.scm
++%%DATADIR%%/scheme/backend/gnet-PCB.scm
++%%DATADIR%%/scheme/backend/gnet-allegro.scm
++%%DATADIR%%/scheme/backend/gnet-bae.scm
++%%DATADIR%%/scheme/backend/gnet-bom.scm
++%%DATADIR%%/scheme/backend/gnet-bom2.scm
++%%DATADIR%%/scheme/backend/gnet-calay.scm
++%%DATADIR%%/scheme/backend/gnet-cascade.scm
++%%DATADIR%%/scheme/backend/gnet-drc.scm
++%%DATADIR%%/scheme/backend/gnet-drc2.scm
++%%DATADIR%%/scheme/backend/gnet-eagle.scm
++%%DATADIR%%/scheme/backend/gnet-ewnet.scm
++%%DATADIR%%/scheme/backend/gnet-futurenet2.scm
++%%DATADIR%%/scheme/backend/gnet-geda.scm
++%%DATADIR%%/scheme/backend/gnet-gossip.scm
++%%DATADIR%%/scheme/backend/gnet-gsch2pcb.scm
++%%DATADIR%%/scheme/backend/gnet-liquidpcb.scm
++%%DATADIR%%/scheme/backend/gnet-makedepend.scm
++%%DATADIR%%/scheme/backend/gnet-mathematica.scm
++%%DATADIR%%/scheme/backend/gnet-maxascii.scm
++%%DATADIR%%/scheme/backend/gnet-osmond.scm
++%%DATADIR%%/scheme/backend/gnet-pads.scm
++%%DATADIR%%/scheme/backend/gnet-partslist1.scm
++%%DATADIR%%/scheme/backend/gnet-partslist2.scm
++%%DATADIR%%/scheme/backend/gnet-partslist3.scm
++%%DATADIR%%/scheme/backend/gnet-pcbpins.scm
++%%DATADIR%%/scheme/backend/gnet-protelII.scm
++%%DATADIR%%/scheme/backend/gnet-redac.scm
++%%DATADIR%%/scheme/backend/gnet-spice-sdb.scm
++%%DATADIR%%/scheme/backend/gnet-spice.scm
++%%DATADIR%%/scheme/backend/gnet-switcap.scm
++%%DATADIR%%/scheme/backend/gnet-systemc.scm
++%%DATADIR%%/scheme/backend/gnet-tEDAx.scm
++%%DATADIR%%/scheme/backend/gnet-tango.scm
++%%DATADIR%%/scheme/backend/gnet-vams.scm
++%%DATADIR%%/scheme/backend/gnet-verilog.scm
++%%DATADIR%%/scheme/backend/gnet-vhdl.scm
++%%DATADIR%%/scheme/backend/gnet-vipec.scm
++%%DATADIR%%/scheme/backend/spice/common.scm
+ %%DATADIR%%/scheme/color-map.scm
++%%DATADIR%%/scheme/conf/schematic/attribs.scm
++%%DATADIR%%/scheme/conf/schematic/deprecated.scm
++%%DATADIR%%/scheme/conf/schematic/keys.scm
++%%DATADIR%%/scheme/conf/schematic/menu.scm
++%%DATADIR%%/scheme/conf/schematic/options.scm
++%%DATADIR%%/scheme/conf/schematic/stroke.scm
+ %%DATADIR%%/scheme/default-attrib-positions.scm
+ %%DATADIR%%/scheme/geda-deprecated-config.scm
+ %%DATADIR%%/scheme/geda.scm
+@@ -745,55 +837,40 @@
+ %%DATADIR%%/scheme/geda/os.scm
+ %%DATADIR%%/scheme/geda/page.scm
+ %%DATADIR%%/scheme/geda/repl.scm
+-%%DATADIR%%/scheme/generate_netlist.scm
+-%%DATADIR%%/scheme/gnet-PCB.scm
+-%%DATADIR%%/scheme/gnet-allegro.scm
+-%%DATADIR%%/scheme/gnet-bae.scm
+-%%DATADIR%%/scheme/gnet-bom.scm
+-%%DATADIR%%/scheme/gnet-bom2.scm
+-%%DATADIR%%/scheme/gnet-calay.scm
+-%%DATADIR%%/scheme/gnet-cascade.scm
+-%%DATADIR%%/scheme/gnet-drc.scm
+-%%DATADIR%%/scheme/gnet-drc2.scm
+-%%DATADIR%%/scheme/gnet-eagle.scm
+-%%DATADIR%%/scheme/gnet-ewnet.scm
+-%%DATADIR%%/scheme/gnet-futurenet2.scm
+-%%DATADIR%%/scheme/gnet-geda.scm
+-%%DATADIR%%/scheme/gnet-gossip.scm
+-%%DATADIR%%/scheme/gnet-gsch2pcb.scm
+-%%DATADIR%%/scheme/gnet-liquidpcb.scm
+-%%DATADIR%%/scheme/gnet-makedepend.scm
+-%%DATADIR%%/scheme/gnet-mathematica.scm
+-%%DATADIR%%/scheme/gnet-maxascii.scm
+-%%DATADIR%%/scheme/gnet-osmond.scm
+-%%DATADIR%%/scheme/gnet-pads.scm
+-%%DATADIR%%/scheme/gnet-partslist1.scm
+-%%DATADIR%%/scheme/gnet-partslist2.scm
+-%%DATADIR%%/scheme/gnet-partslist3.scm
+-%%DATADIR%%/scheme/gnet-pcbpins.scm
+-%%DATADIR%%/scheme/gnet-protelII.scm
+-%%DATADIR%%/scheme/gnet-redac.scm
+-%%DATADIR%%/scheme/gnet-spice-sdb.scm
+-%%DATADIR%%/scheme/gnet-spice.scm
+-%%DATADIR%%/scheme/gnet-switcap.scm
+-%%DATADIR%%/scheme/gnet-systemc.scm
+-%%DATADIR%%/scheme/gnet-tEDAx.scm
+-%%DATADIR%%/scheme/gnet-tango.scm
+-%%DATADIR%%/scheme/gnet-vams.scm
+-%%DATADIR%%/scheme/gnet-verilog.scm
+-%%DATADIR%%/scheme/gnet-vhdl.scm
+-%%DATADIR%%/scheme/gnet-vipec.scm
++%%DATADIR%%/scheme/gschem/action.scm
++%%DATADIR%%/scheme/gschem/attrib.scm
++%%DATADIR%%/scheme/gschem/builtins.scm
++%%DATADIR%%/scheme/gschem/core/gettext.scm
++%%DATADIR%%/scheme/gschem/deprecated.scm
++%%DATADIR%%/scheme/gschem/gschemdoc.scm
++%%DATADIR%%/scheme/gschem/hook.scm
++%%DATADIR%%/scheme/gschem/keymap.scm
++%%DATADIR%%/scheme/gschem/repl.scm
++%%DATADIR%%/scheme/gschem/selection.scm
++%%DATADIR%%/scheme/gschem/symbol/check.scm
++%%DATADIR%%/scheme/gschem/util.scm
++%%DATADIR%%/scheme/gschem/window.scm
++%%DATADIR%%/scheme/lepton/file-system.scm
++%%DATADIR%%/scheme/lepton/legacy-config.scm
++%%DATADIR%%/scheme/lepton/legacy-config/keylist.scm
++%%DATADIR%%/scheme/lepton/library.scm
++%%DATADIR%%/scheme/lepton/library/component.scm
++%%DATADIR%%/scheme/lepton/rc.scm
++%%DATADIR%%/scheme/lepton/version.scm
++%%DATADIR%%/scheme/list-keys.scm
+ %%DATADIR%%/scheme/netlist.scm
+ %%DATADIR%%/scheme/netlist/attrib/compare.scm
+ %%DATADIR%%/scheme/netlist/backend-getopt.scm
+ %%DATADIR%%/scheme/netlist/config.scm
++%%DATADIR%%/scheme/netlist/core/gettext.scm
++%%DATADIR%%/scheme/netlist/deprecated.scm
+ %%DATADIR%%/scheme/netlist/error.scm
+-%%DATADIR%%/scheme/netlist/core/gettext.scm
+ %%DATADIR%%/scheme/netlist/hierarchy.scm
+ %%DATADIR%%/scheme/netlist/net.scm
+ %%DATADIR%%/scheme/netlist/option.scm
+ %%DATADIR%%/scheme/netlist/package-pin.scm
+ %%DATADIR%%/scheme/netlist/package.scm
++%%DATADIR%%/scheme/netlist/page.scm
+ %%DATADIR%%/scheme/netlist/partlist.scm
+ %%DATADIR%%/scheme/netlist/partlist/common.scm
+ %%DATADIR%%/scheme/netlist/pin-net.scm
+@@ -800,32 +877,20 @@
+ %%DATADIR%%/scheme/netlist/port.scm
+ %%DATADIR%%/scheme/netlist/rename.scm
+ %%DATADIR%%/scheme/netlist/repl.scm
++%%DATADIR%%/scheme/netlist/schematic-component.scm
++%%DATADIR%%/scheme/netlist/schematic-connection.scm
+ %%DATADIR%%/scheme/netlist/schematic.scm
++%%DATADIR%%/scheme/netlist/schematic/toplevel.scm
+ %%DATADIR%%/scheme/netlist/sort.scm
+ %%DATADIR%%/scheme/netlist/traverse.scm
+ %%DATADIR%%/scheme/netlist/verbose.scm
+-%%DATADIR%%/scheme/gschem.scm
+-%%DATADIR%%/scheme/gschem/action.scm
+-%%DATADIR%%/scheme/gschem/attrib.scm
+-%%DATADIR%%/scheme/gschem/builtins.scm
+-%%DATADIR%%/scheme/gschem/core/gettext.scm
+-%%DATADIR%%/scheme/gschem/deprecated.scm
+-%%DATADIR%%/scheme/gschem/gschemdoc.scm
+-%%DATADIR%%/scheme/gschem/hook.scm
+-%%DATADIR%%/scheme/gschem/keymap.scm
+-%%DATADIR%%/scheme/gschem/repl.scm
+-%%DATADIR%%/scheme/gschem/selection.scm
+-%%DATADIR%%/scheme/gschem/symbol/check.scm
+-%%DATADIR%%/scheme/gschem/util.scm
+-%%DATADIR%%/scheme/gschem/window.scm
+-%%DATADIR%%/scheme/image.scm
+-%%DATADIR%%/scheme/lepton/version.scm
+-%%DATADIR%%/scheme/list-keys.scm
+ %%DATADIR%%/scheme/pcb.scm
+ %%DATADIR%%/scheme/print-NB-attribs.scm
+-%%DATADIR%%/scheme/print.scm
++%%DATADIR%%/scheme/schematic/gui/keymap.scm
++%%DATADIR%%/scheme/schematic/gui/stroke.scm
++%%DATADIR%%/scheme/schematic/netlist.scm
++%%DATADIR%%/scheme/schematic/precompile.scm
+ %%DATADIR%%/scheme/schematic/undo.scm
+-%%DATADIR%%/scheme/spice-common.scm
+ %%DATADIR%%/scheme/symbol/blame.scm
+ %%DATADIR%%/scheme/symbol/check.scm
+ %%DATADIR%%/scheme/symbol/check/alignment.scm
+@@ -855,6 +920,184 @@
+ %%DATADIR%%/scheme/symcheck/check.scm
+ %%DATADIR%%/scheme/symcheck/option.scm
+ %%DATADIR%%/scheme/symcheck/report.scm
++%%DATADIR%%/sym-gnetman/capacitor-1.sym
++%%DATADIR%%/sym-gnetman/ccvs-1.sym
++%%DATADIR%%/sym-gnetman/clkinv.sym
++%%DATADIR%%/sym-gnetman/cvstitle.sym
++%%DATADIR%%/sym-gnetman/dffr.sym
++%%DATADIR%%/sym-gnetman/idc-1.sym
++%%DATADIR%%/sym-gnetman/in.sym
++%%DATADIR%%/sym-gnetman/inductor-1.sym
++%%DATADIR%%/sym-gnetman/inv.sym
++%%DATADIR%%/sym-gnetman/io.sym
++%%DATADIR%%/sym-gnetman/lat.sym
++%%DATADIR%%/sym-gnetman/latr.sym
++%%DATADIR%%/sym-gnetman/nand2.sym
++%%DATADIR%%/sym-gnetman/nand3.sym
++%%DATADIR%%/sym-gnetman/nmos.sym
++%%DATADIR%%/sym-gnetman/nmos4.sym
++%%DATADIR%%/sym-gnetman/nor2.sym
++%%DATADIR%%/sym-gnetman/out.sym
++%%DATADIR%%/sym-gnetman/passtrans.sym
++%%DATADIR%%/sym-gnetman/pmos.sym
++%%DATADIR%%/sym-gnetman/pmos4.sym
++%%DATADIR%%/sym-gnetman/resistor-1.sym
++%%DATADIR%%/sym-gnetman/vccs-1.sym
++%%DATADIR%%/sym-gnetman/vcvs-1.sym
++%%DATADIR%%/sym-gnetman/vdc-1.sym
++%%DATADIR%%/sym-gnetman/vdd.sym
++%%DATADIR%%/sym-gnetman/vpulse-1.sym
++%%DATADIR%%/sym-gnetman/vpwl-1.sym
++%%DATADIR%%/sym-gnetman/vss.sym
++%%DATADIR%%/sym-verilog/and2-1.sym
++%%DATADIR%%/sym-verilog/and2-2.sym
++%%DATADIR%%/sym-verilog/and3-1.sym
++%%DATADIR%%/sym-verilog/and3-2.sym
++%%DATADIR%%/sym-verilog/and4-1.sym
++%%DATADIR%%/sym-verilog/and4-2.sym
++%%DATADIR%%/sym-verilog/and5-1.sym
++%%DATADIR%%/sym-verilog/and5-2.sym
++%%DATADIR%%/sym-verilog/and6-1.sym
++%%DATADIR%%/sym-verilog/and6-2.sym
++%%DATADIR%%/sym-verilog/and7-1.sym
++%%DATADIR%%/sym-verilog/and7-2.sym
++%%DATADIR%%/sym-verilog/and8-1.sym
++%%DATADIR%%/sym-verilog/and8-2.sym
++%%DATADIR%%/sym-verilog/and9-1.sym
++%%DATADIR%%/sym-verilog/and9-2.sym
++%%DATADIR%%/sym-verilog/block-1.sym
++%%DATADIR%%/sym-verilog/block_pos-1.sym
++%%DATADIR%%/sym-verilog/buf-1.sym
++%%DATADIR%%/sym-verilog/bufif0-1.sym
++%%DATADIR%%/sym-verilog/bufif1-1.sym
++%%DATADIR%%/sym-verilog/high-1.sym
++%%DATADIR%%/sym-verilog/iopad-1.sym
++%%DATADIR%%/sym-verilog/ipad-1.sym
++%%DATADIR%%/sym-verilog/low-1.sym
++%%DATADIR%%/sym-verilog/nand2-1.sym
++%%DATADIR%%/sym-verilog/nand2-2.sym
++%%DATADIR%%/sym-verilog/nand3-1.sym
++%%DATADIR%%/sym-verilog/nand3-2.sym
++%%DATADIR%%/sym-verilog/nand4-1.sym
++%%DATADIR%%/sym-verilog/nand4-2.sym
++%%DATADIR%%/sym-verilog/nand5-1.sym
++%%DATADIR%%/sym-verilog/nand5-2.sym
++%%DATADIR%%/sym-verilog/nand6-1.sym
++%%DATADIR%%/sym-verilog/nand6-2.sym
++%%DATADIR%%/sym-verilog/nand7-1.sym
++%%DATADIR%%/sym-verilog/nand7-2.sym
++%%DATADIR%%/sym-verilog/nand8-1.sym
++%%DATADIR%%/sym-verilog/nand8-2.sym
++%%DATADIR%%/sym-verilog/nand9-1.sym
++%%DATADIR%%/sym-verilog/nand9-2.sym
++%%DATADIR%%/sym-verilog/nor2-1.sym
++%%DATADIR%%/sym-verilog/nor2-2.sym
++%%DATADIR%%/sym-verilog/nor3-1.sym
++%%DATADIR%%/sym-verilog/nor3-2.sym
++%%DATADIR%%/sym-verilog/nor4-1.sym
++%%DATADIR%%/sym-verilog/nor4-2.sym
++%%DATADIR%%/sym-verilog/nor5-1.sym
++%%DATADIR%%/sym-verilog/nor5-2.sym
++%%DATADIR%%/sym-verilog/nor6-1.sym
++%%DATADIR%%/sym-verilog/nor6-2.sym
++%%DATADIR%%/sym-verilog/nor7-1.sym
++%%DATADIR%%/sym-verilog/nor7-2.sym
++%%DATADIR%%/sym-verilog/nor8-1.sym
++%%DATADIR%%/sym-verilog/nor8-2.sym
++%%DATADIR%%/sym-verilog/nor9-1.sym
++%%DATADIR%%/sym-verilog/nor9-2.sym
++%%DATADIR%%/sym-verilog/not-1.sym
++%%DATADIR%%/sym-verilog/notif0-1.sym
++%%DATADIR%%/sym-verilog/notif1-1.sym
++%%DATADIR%%/sym-verilog/opad-1.sym
++%%DATADIR%%/sym-verilog/or2-1.sym
++%%DATADIR%%/sym-verilog/or2-2.sym
++%%DATADIR%%/sym-verilog/or3-1.sym
++%%DATADIR%%/sym-verilog/or3-2.sym
++%%DATADIR%%/sym-verilog/or4-1.sym
++%%DATADIR%%/sym-verilog/or4-2.sym
++%%DATADIR%%/sym-verilog/or5-1.sym
++%%DATADIR%%/sym-verilog/or5-2.sym
++%%DATADIR%%/sym-verilog/or6-1.sym
++%%DATADIR%%/sym-verilog/or6-2.sym
++%%DATADIR%%/sym-verilog/or7-1.sym
++%%DATADIR%%/sym-verilog/or7-2.sym
++%%DATADIR%%/sym-verilog/or8-1.sym
++%%DATADIR%%/sym-verilog/or8-2.sym
++%%DATADIR%%/sym-verilog/or9-1.sym
++%%DATADIR%%/sym-verilog/or9-2.sym
++%%DATADIR%%/sym-verilog/pulldown-1.sym
++%%DATADIR%%/sym-verilog/pullup-1.sym
++%%DATADIR%%/sym-verilog/test_verilog.sym
++%%DATADIR%%/sym-verilog/xnor2-1.sym
++%%DATADIR%%/sym-verilog/xnor3-1.sym
++%%DATADIR%%/sym-verilog/xnor4-1.sym
++%%DATADIR%%/sym-verilog/xnor5-1.sym
++%%DATADIR%%/sym-verilog/xnor6-1.sym
++%%DATADIR%%/sym-verilog/xnor7-1.sym
++%%DATADIR%%/sym-verilog/xnor8-1.sym
++%%DATADIR%%/sym-verilog/xnor9-1.sym
++%%DATADIR%%/sym-verilog/xor2-1.sym
++%%DATADIR%%/sym-verilog/xor3-1.sym
++%%DATADIR%%/sym-verilog/xor4-1.sym
++%%DATADIR%%/sym-verilog/xor5-1.sym
++%%DATADIR%%/sym-verilog/xor6-1.sym
++%%DATADIR%%/sym-verilog/xor7-1.sym
++%%DATADIR%%/sym-verilog/xor8-1.sym
++%%DATADIR%%/sym-verilog/xor9-1.sym
++%%DATADIR%%/sym-vhdl/and2-1.sym
++%%DATADIR%%/sym-vhdl/and3-1.sym
++%%DATADIR%%/sym-vhdl/and4-1.sym
++%%DATADIR%%/sym-vhdl/and5-1.sym
++%%DATADIR%%/sym-vhdl/and6-1.sym
++%%DATADIR%%/sym-vhdl/and7-1.sym
++%%DATADIR%%/sym-vhdl/and8-1.sym
++%%DATADIR%%/sym-vhdl/and9-1.sym
++%%DATADIR%%/sym-vhdl/iopad-1.sym
++%%DATADIR%%/sym-vhdl/ipad-1.sym
++%%DATADIR%%/sym-vhdl/nand2-1.sym
++%%DATADIR%%/sym-vhdl/nand3-1.sym
++%%DATADIR%%/sym-vhdl/nand4-1.sym
++%%DATADIR%%/sym-vhdl/nand5-1.sym
++%%DATADIR%%/sym-vhdl/nand6-1.sym
++%%DATADIR%%/sym-vhdl/nand7-1.sym
++%%DATADIR%%/sym-vhdl/nand8-1.sym
++%%DATADIR%%/sym-vhdl/nand9-1.sym
++%%DATADIR%%/sym-vhdl/nor2-1.sym
++%%DATADIR%%/sym-vhdl/nor3-1.sym
++%%DATADIR%%/sym-vhdl/nor4-1.sym
++%%DATADIR%%/sym-vhdl/nor5-1.sym
++%%DATADIR%%/sym-vhdl/nor6-1.sym
++%%DATADIR%%/sym-vhdl/nor7-1.sym
++%%DATADIR%%/sym-vhdl/nor8-1.sym
++%%DATADIR%%/sym-vhdl/nor9-1.sym
++%%DATADIR%%/sym-vhdl/not-1.sym
++%%DATADIR%%/sym-vhdl/opad-1.sym
++%%DATADIR%%/sym-vhdl/opad6-1.sym
++%%DATADIR%%/sym-vhdl/or2-1.sym
++%%DATADIR%%/sym-vhdl/or3-1.sym
++%%DATADIR%%/sym-vhdl/or4-1.sym
++%%DATADIR%%/sym-vhdl/or5-1.sym
++%%DATADIR%%/sym-vhdl/or6-1.sym
++%%DATADIR%%/sym-vhdl/or7-1.sym
++%%DATADIR%%/sym-vhdl/or8-1.sym
++%%DATADIR%%/sym-vhdl/or9-1.sym
++%%DATADIR%%/sym-vhdl/xnor2-1.sym
++%%DATADIR%%/sym-vhdl/xnor3-1.sym
++%%DATADIR%%/sym-vhdl/xnor4-1.sym
++%%DATADIR%%/sym-vhdl/xnor5-1.sym
++%%DATADIR%%/sym-vhdl/xnor6-1.sym
++%%DATADIR%%/sym-vhdl/xnor7-1.sym
++%%DATADIR%%/sym-vhdl/xnor8-1.sym
++%%DATADIR%%/sym-vhdl/xnor9-1.sym
++%%DATADIR%%/sym-vhdl/xor2-1.sym
++%%DATADIR%%/sym-vhdl/xor3-1.sym
++%%DATADIR%%/sym-vhdl/xor4-1.sym
++%%DATADIR%%/sym-vhdl/xor5-1.sym
++%%DATADIR%%/sym-vhdl/xor6-1.sym
++%%DATADIR%%/sym-vhdl/xor7-1.sym
++%%DATADIR%%/sym-vhdl/xor8-1.sym
++%%DATADIR%%/sym-vhdl/xor9-1.sym
+ %%DATADIR%%/sym/4000/4000-1.sym
+ %%DATADIR%%/sym/4000/4000-2.sym
+ %%DATADIR%%/sym/4000/4001-1.sym
+@@ -1604,35 +1847,6 @@
+ %%DATADIR%%/sym/ecl/MC10E137-1.sym
+ %%DATADIR%%/sym/ecl/MC10E137-2.sym
+ %%DATADIR%%/sym/ecl/MC12429-1.sym
+-%%DATADIR%%/sym/gnetman/capacitor-1.sym
+-%%DATADIR%%/sym/gnetman/ccvs-1.sym
+-%%DATADIR%%/sym/gnetman/clkinv.sym
+-%%DATADIR%%/sym/gnetman/cvstitle.sym
+-%%DATADIR%%/sym/gnetman/dffr.sym
+-%%DATADIR%%/sym/gnetman/idc-1.sym
+-%%DATADIR%%/sym/gnetman/in.sym
+-%%DATADIR%%/sym/gnetman/inductor-1.sym
+-%%DATADIR%%/sym/gnetman/inv.sym
+-%%DATADIR%%/sym/gnetman/io.sym
+-%%DATADIR%%/sym/gnetman/lat.sym
+-%%DATADIR%%/sym/gnetman/latr.sym
+-%%DATADIR%%/sym/gnetman/nand2.sym
+-%%DATADIR%%/sym/gnetman/nand3.sym
+-%%DATADIR%%/sym/gnetman/nmos.sym
+-%%DATADIR%%/sym/gnetman/nmos4.sym
+-%%DATADIR%%/sym/gnetman/nor2.sym
+-%%DATADIR%%/sym/gnetman/out.sym
+-%%DATADIR%%/sym/gnetman/passtrans.sym
+-%%DATADIR%%/sym/gnetman/pmos.sym
+-%%DATADIR%%/sym/gnetman/pmos4.sym
+-%%DATADIR%%/sym/gnetman/resistor-1.sym
+-%%DATADIR%%/sym/gnetman/vccs-1.sym
+-%%DATADIR%%/sym/gnetman/vcvs-1.sym
+-%%DATADIR%%/sym/gnetman/vdc-1.sym
+-%%DATADIR%%/sym/gnetman/vdd.sym
+-%%DATADIR%%/sym/gnetman/vpulse-1.sym
+-%%DATADIR%%/sym/gnetman/vpwl-1.sym
+-%%DATADIR%%/sym/gnetman/vss.sym
+ %%DATADIR%%/sym/idt/idt7204-1.sym
+ %%DATADIR%%/sym/io/LCD-1.sym
+ %%DATADIR%%/sym/io/TEC4x3-1.sym
+@@ -2178,155 +2392,6 @@
+ %%DATADIR%%/sym/tube/12SQ7-1.sym
+ %%DATADIR%%/sym/tube/35Z5GT-1.sym
+ %%DATADIR%%/sym/tube/50L6GT-1.sym
+-%%DATADIR%%/sym/verilog/and2-1.sym
+-%%DATADIR%%/sym/verilog/and2-2.sym
+-%%DATADIR%%/sym/verilog/and3-1.sym
+-%%DATADIR%%/sym/verilog/and3-2.sym
+-%%DATADIR%%/sym/verilog/and4-1.sym
+-%%DATADIR%%/sym/verilog/and4-2.sym
+-%%DATADIR%%/sym/verilog/and5-1.sym
+-%%DATADIR%%/sym/verilog/and5-2.sym
+-%%DATADIR%%/sym/verilog/and6-1.sym
+-%%DATADIR%%/sym/verilog/and6-2.sym
+-%%DATADIR%%/sym/verilog/and7-1.sym
+-%%DATADIR%%/sym/verilog/and7-2.sym
+-%%DATADIR%%/sym/verilog/and8-1.sym
+-%%DATADIR%%/sym/verilog/and8-2.sym
+-%%DATADIR%%/sym/verilog/and9-1.sym
+-%%DATADIR%%/sym/verilog/and9-2.sym
+-%%DATADIR%%/sym/verilog/block-1.sym
+-%%DATADIR%%/sym/verilog/block_pos-1.sym
+-%%DATADIR%%/sym/verilog/buf-1.sym
+-%%DATADIR%%/sym/verilog/bufif0-1.sym
+-%%DATADIR%%/sym/verilog/bufif1-1.sym
+-%%DATADIR%%/sym/verilog/high-1.sym
+-%%DATADIR%%/sym/verilog/iopad-1.sym
+-%%DATADIR%%/sym/verilog/ipad-1.sym
+-%%DATADIR%%/sym/verilog/low-1.sym
+-%%DATADIR%%/sym/verilog/nand2-1.sym
+-%%DATADIR%%/sym/verilog/nand2-2.sym
+-%%DATADIR%%/sym/verilog/nand3-1.sym
+-%%DATADIR%%/sym/verilog/nand3-2.sym
+-%%DATADIR%%/sym/verilog/nand4-1.sym
+-%%DATADIR%%/sym/verilog/nand4-2.sym
+-%%DATADIR%%/sym/verilog/nand5-1.sym
+-%%DATADIR%%/sym/verilog/nand5-2.sym
+-%%DATADIR%%/sym/verilog/nand6-1.sym
+-%%DATADIR%%/sym/verilog/nand6-2.sym
+-%%DATADIR%%/sym/verilog/nand7-1.sym
+-%%DATADIR%%/sym/verilog/nand7-2.sym
+-%%DATADIR%%/sym/verilog/nand8-1.sym
+-%%DATADIR%%/sym/verilog/nand8-2.sym
+-%%DATADIR%%/sym/verilog/nand9-1.sym
+-%%DATADIR%%/sym/verilog/nand9-2.sym
+-%%DATADIR%%/sym/verilog/nor2-1.sym
+-%%DATADIR%%/sym/verilog/nor2-2.sym
+-%%DATADIR%%/sym/verilog/nor3-1.sym
+-%%DATADIR%%/sym/verilog/nor3-2.sym
+-%%DATADIR%%/sym/verilog/nor4-1.sym
+-%%DATADIR%%/sym/verilog/nor4-2.sym
+-%%DATADIR%%/sym/verilog/nor5-1.sym
+-%%DATADIR%%/sym/verilog/nor5-2.sym
+-%%DATADIR%%/sym/verilog/nor6-1.sym
+-%%DATADIR%%/sym/verilog/nor6-2.sym
+-%%DATADIR%%/sym/verilog/nor7-1.sym
+-%%DATADIR%%/sym/verilog/nor7-2.sym
+-%%DATADIR%%/sym/verilog/nor8-1.sym
+-%%DATADIR%%/sym/verilog/nor8-2.sym
+-%%DATADIR%%/sym/verilog/nor9-1.sym
+-%%DATADIR%%/sym/verilog/nor9-2.sym
+-%%DATADIR%%/sym/verilog/not-1.sym
+-%%DATADIR%%/sym/verilog/notif0-1.sym
+-%%DATADIR%%/sym/verilog/notif1-1.sym
+-%%DATADIR%%/sym/verilog/opad-1.sym
+-%%DATADIR%%/sym/verilog/or2-1.sym
+-%%DATADIR%%/sym/verilog/or2-2.sym
+-%%DATADIR%%/sym/verilog/or3-1.sym
+-%%DATADIR%%/sym/verilog/or3-2.sym
+-%%DATADIR%%/sym/verilog/or4-1.sym
+-%%DATADIR%%/sym/verilog/or4-2.sym
+-%%DATADIR%%/sym/verilog/or5-1.sym
+-%%DATADIR%%/sym/verilog/or5-2.sym
+-%%DATADIR%%/sym/verilog/or6-1.sym
+-%%DATADIR%%/sym/verilog/or6-2.sym
+-%%DATADIR%%/sym/verilog/or7-1.sym
+-%%DATADIR%%/sym/verilog/or7-2.sym
+-%%DATADIR%%/sym/verilog/or8-1.sym
+-%%DATADIR%%/sym/verilog/or8-2.sym
+-%%DATADIR%%/sym/verilog/or9-1.sym
+-%%DATADIR%%/sym/verilog/or9-2.sym
+-%%DATADIR%%/sym/verilog/pulldown-1.sym
+-%%DATADIR%%/sym/verilog/pullup-1.sym
+-%%DATADIR%%/sym/verilog/test_verilog.sym
+-%%DATADIR%%/sym/verilog/xnor2-1.sym
+-%%DATADIR%%/sym/verilog/xnor3-1.sym
+-%%DATADIR%%/sym/verilog/xnor4-1.sym
+-%%DATADIR%%/sym/verilog/xnor5-1.sym
+-%%DATADIR%%/sym/verilog/xnor6-1.sym
+-%%DATADIR%%/sym/verilog/xnor7-1.sym
+-%%DATADIR%%/sym/verilog/xnor8-1.sym
+-%%DATADIR%%/sym/verilog/xnor9-1.sym
+-%%DATADIR%%/sym/verilog/xor2-1.sym
+-%%DATADIR%%/sym/verilog/xor3-1.sym
+-%%DATADIR%%/sym/verilog/xor4-1.sym
+-%%DATADIR%%/sym/verilog/xor5-1.sym
+-%%DATADIR%%/sym/verilog/xor6-1.sym
+-%%DATADIR%%/sym/verilog/xor7-1.sym
+-%%DATADIR%%/sym/verilog/xor8-1.sym
+-%%DATADIR%%/sym/verilog/xor9-1.sym
+-%%DATADIR%%/sym/vhdl/and2-1.sym
+-%%DATADIR%%/sym/vhdl/and3-1.sym
+-%%DATADIR%%/sym/vhdl/and4-1.sym
+-%%DATADIR%%/sym/vhdl/and5-1.sym
+-%%DATADIR%%/sym/vhdl/and6-1.sym
+-%%DATADIR%%/sym/vhdl/and7-1.sym
+-%%DATADIR%%/sym/vhdl/and8-1.sym
+-%%DATADIR%%/sym/vhdl/and9-1.sym
+-%%DATADIR%%/sym/vhdl/iopad-1.sym
+-%%DATADIR%%/sym/vhdl/ipad-1.sym
+-%%DATADIR%%/sym/vhdl/nand2-1.sym
+-%%DATADIR%%/sym/vhdl/nand3-1.sym
+-%%DATADIR%%/sym/vhdl/nand4-1.sym
+-%%DATADIR%%/sym/vhdl/nand5-1.sym
+-%%DATADIR%%/sym/vhdl/nand6-1.sym
+-%%DATADIR%%/sym/vhdl/nand7-1.sym
+-%%DATADIR%%/sym/vhdl/nand8-1.sym
+-%%DATADIR%%/sym/vhdl/nand9-1.sym
+-%%DATADIR%%/sym/vhdl/nor2-1.sym
+-%%DATADIR%%/sym/vhdl/nor3-1.sym
+-%%DATADIR%%/sym/vhdl/nor4-1.sym
+-%%DATADIR%%/sym/vhdl/nor5-1.sym
+-%%DATADIR%%/sym/vhdl/nor6-1.sym
+-%%DATADIR%%/sym/vhdl/nor7-1.sym
+-%%DATADIR%%/sym/vhdl/nor8-1.sym
+-%%DATADIR%%/sym/vhdl/nor9-1.sym
+-%%DATADIR%%/sym/vhdl/not-1.sym
+-%%DATADIR%%/sym/vhdl/opad-1.sym
+-%%DATADIR%%/sym/vhdl/opad6-1.sym
+-%%DATADIR%%/sym/vhdl/or2-1.sym
+-%%DATADIR%%/sym/vhdl/or3-1.sym
+-%%DATADIR%%/sym/vhdl/or4-1.sym
+-%%DATADIR%%/sym/vhdl/or5-1.sym
+-%%DATADIR%%/sym/vhdl/or6-1.sym
+-%%DATADIR%%/sym/vhdl/or7-1.sym
+-%%DATADIR%%/sym/vhdl/or8-1.sym
+-%%DATADIR%%/sym/vhdl/or9-1.sym
+-%%DATADIR%%/sym/vhdl/xnor2-1.sym
+-%%DATADIR%%/sym/vhdl/xnor3-1.sym
+-%%DATADIR%%/sym/vhdl/xnor4-1.sym
+-%%DATADIR%%/sym/vhdl/xnor5-1.sym
+-%%DATADIR%%/sym/vhdl/xnor6-1.sym
+-%%DATADIR%%/sym/vhdl/xnor7-1.sym
+-%%DATADIR%%/sym/vhdl/xnor8-1.sym
+-%%DATADIR%%/sym/vhdl/xnor9-1.sym
+-%%DATADIR%%/sym/vhdl/xor2-1.sym
+-%%DATADIR%%/sym/vhdl/xor3-1.sym
+-%%DATADIR%%/sym/vhdl/xor4-1.sym
+-%%DATADIR%%/sym/vhdl/xor5-1.sym
+-%%DATADIR%%/sym/vhdl/xor6-1.sym
+-%%DATADIR%%/sym/vhdl/xor7-1.sym
+-%%DATADIR%%/sym/vhdl/xor8-1.sym
+-%%DATADIR%%/sym/vhdl/xor9-1.sym
+ %%DATADIR%%/sym/xilinx/XC2S100-5PQ208C.sym
+ %%DATADIR%%/sym/xilinx/XC2S100-5PQ208I.sym
+ %%DATADIR%%/sym/xilinx/XC2S100-6PQ208C.sym
+@@ -2344,50 +2409,48 @@
+ %%DATADIR%%/sym/xilinx/XC2S50-6PQ208C.sym
+ %%DATADIR%%/sym/xilinx/XC95108-PC84.sym
+ %%DATADIR%%/system-gafrc
+-%%DATADIR%%/system-gattribrc
+ %%DATADIR%%/system-gschemrc
+-%%DATADIR%%/system-gschlasrc
+ %%NLS%%share/locale/af/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/af/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/ar/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/ar/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/ar/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/ar/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/bg/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/bg/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/bs/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/bs/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/ca/LC_MESSAGES/lepton-attrib.mo
+-%%NLS%%share/locale/ca/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/ca/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/da/LC_MESSAGES/lepton-attrib.mo
+-%%NLS%%share/locale/da/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/da/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/de/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/de/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/de/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/de/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/el/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/el/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/el/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/el/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/en_GB/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/en_GB/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/en_GB/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/en_GB/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/es/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/es/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/es/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/es/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/fa/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/fa/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/fi/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/fr/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/fr/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/fr/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/fr/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/gl/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/he/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/hu/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/hu/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/hu/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/hu/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/it/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/it/LC_MESSAGES/lepton-cli.mo
+ %%NLS%%share/locale/it/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/it/LC_MESSAGES/lepton-symcheck.mo
+-%%NLS%%share/locale/it/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/it/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/ja/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/ja/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/ml/LC_MESSAGES/lepton-attrib.mo
+@@ -2398,40 +2461,40 @@
+ %%NLS%%share/locale/nl/LC_MESSAGES/lepton-netlist.mo
+ %%NLS%%share/locale/nl/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/nl/LC_MESSAGES/lepton-symcheck.mo
+-%%NLS%%share/locale/nl/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/nl/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/oc/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/pl/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/pl/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/pl/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/pl/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/pt/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/pt/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/pt/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/pt/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/pt_BR/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/pt_BR/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/pt_BR/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/pt_BR/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/ru/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/ru/LC_MESSAGES/lepton-cli.mo
+ %%NLS%%share/locale/ru/LC_MESSAGES/lepton-netlist.mo
+ %%NLS%%share/locale/ru/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/ru/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/ru/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/sl/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/sl/LC_MESSAGES/lepton-schematic.mo
+ %%NLS%%share/locale/sr/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/sr/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/sr/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/sr/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/sv/LC_MESSAGES/lepton-attrib.mo
+-%%NLS%%share/locale/sv/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/sv/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/tr/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/tr/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/tr/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/tr/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/uk/LC_MESSAGES/lepton-attrib.mo
+-%%NLS%%share/locale/uk/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/uk/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/zh_CN/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/zh_CN/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/zh_CN/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/zh_CN/LC_MESSAGES/liblepton.mo
+ %%NLS%%share/locale/zh_TW/LC_MESSAGES/lepton-attrib.mo
+ %%NLS%%share/locale/zh_TW/LC_MESSAGES/lepton-schematic.mo
+-%%NLS%%share/locale/zh_TW/LC_MESSAGES/liblepton3.mo
++%%NLS%%share/locale/zh_TW/LC_MESSAGES/liblepton.mo
+ share/mime/application/x-lepton-sch2pcb-project.xml
+ share/mime/application/x-lepton-schematic.xml
+ share/mime/application/x-lepton-symbol.xml
