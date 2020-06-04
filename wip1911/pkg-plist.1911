@@ -762,8 +762,6 @@ share/icons/hicolor/scalable/apps/lepton-schematic.svg
 share/icons/hicolor/scalable/mimetypes/application-x-lepton-sch2pcb-project.svg
 share/icons/hicolor/scalable/mimetypes/application-x-lepton-schematic.svg
 share/icons/hicolor/scalable/mimetypes/application-x-lepton-symbol.svg
-share/info/dir
-share/info/lepton-scheme.info
 %%DATADIR%%/bitmap/gschem-about-logo.png
 %%DATADIR%%/bitmap/gschem-alignment_bottomcenter.png
 %%DATADIR%%/bitmap/gschem-alignment_bottomleft.png
