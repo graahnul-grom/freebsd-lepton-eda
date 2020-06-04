@@ -97,7 +97,6 @@ man/man1/lepton-tragesym.1.gz
 man/man1/lepton-upcfg.1.gz
 share/applications/lepton-attrib.desktop
 share/applications/lepton-schematic.desktop
-share/applications/mimeinfo.cache
 %%PORTDOCS%%%%DOCSDIR%%/NEWS.md
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/changelogs/changelog.docs
@@ -2569,20 +2568,8 @@ share/locale/zh_CN/LC_MESSAGES/libleptonattrib.mo
 share/locale/zh_TW/LC_MESSAGES/lepton-schematic.mo
 share/locale/zh_TW/LC_MESSAGES/liblepton.mo
 share/locale/zh_TW/LC_MESSAGES/libleptonattrib.mo
-share/mime/XMLnamespaces
-share/mime/aliases
 share/mime/application/x-lepton-sch2pcb-project.xml
 share/mime/application/x-lepton-schematic.xml
 share/mime/application/x-lepton-symbol.xml
-share/mime/generic-icons
-share/mime/globs
-share/mime/globs2
-share/mime/icons
-share/mime/magic
-share/mime/mime.cache
 share/mime/packages/liblepton.xml
-share/mime/subclasses
-share/mime/treemagic
-share/mime/types
-share/mime/version
 @dir %%DATADIR%%/sym/local
