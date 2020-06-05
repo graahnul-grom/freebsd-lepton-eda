@@ -3,13 +3,18 @@ freebsd-lepton-eda
 
 [Lepton EDA](https://github.com/lepton-eda/lepton-eda) (Electronic Design Automation) port for FreeBSD
 
-Current version: [1.9.10](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.10-20200319).
+Current version: [1.9.11](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.11-20200604).
 <br />
 See the [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md) file for recent changes.
 
 
 News
 ----
+
+Lepton EDA 1.9.11 has been released.<br />
+Changes to the port have been [committed](https://svnweb.freebsd.org/ports?view=revision&revision=537997).<br />
+Thanks to Fernando (fernape@) from the FreeBSD Developers team for his quick response!
+<br />
 
 The port has been updated to Lepton EDA 1.9.10 release.<br />
 Binary packages are available in the 2020Q2 quarterly branch.
