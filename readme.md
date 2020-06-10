@@ -3,6 +3,8 @@ Lepton EDA for FreeBSD
 
 Lepton EDA is a part of the FreeBSD Ports Collection ([cad/lepton-eda](https://svnweb.freebsd.org/ports/head/cad/lepton-eda)) since February, 23rd, 2019.
 <br />
+Port's page on FreshPorts.org: https://www.freshports.org/cad/lepton-eda
+<br />
 <br />
 Current version: [1.9.11](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.11-20200604).
 <br />
