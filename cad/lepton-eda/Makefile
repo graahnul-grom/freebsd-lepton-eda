@@ -34,7 +34,7 @@ INSTALL_TARGET=	install-strip
 
 INSTALLS_ICONS=	yes
 
-INFO=	lepton-scheme
+INFO=	lepton-scheme lepton-manual
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
