@@ -4,6 +4,8 @@ PORTNAME=	lepton-eda
 PORTVERSION=	1.9.13
 DISTVERSIONSUFFIX=	-20201211
 CATEGORIES=	cad
+MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${DISTVERSIONFULL}/
+DISTNAME=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
@@ -20,7 +22,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		autoreconf desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
 		pkgconfig shared-mime-info shebangfix
-USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 
