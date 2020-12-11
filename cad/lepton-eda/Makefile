@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke
 
-USES=		autoreconf desktop-file-utils gettext-tools gnome \
+USES=		desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
 		pkgconfig shared-mime-info shebangfix
 USE_GNOME=	cairo gtk20
@@ -45,10 +45,10 @@ NLS_USES=		gettext-runtime
 post-patch:
 	${REINPLACE_CMD} -e \
 		's,\$$(docdir)/examples,\$$(datadir)/examples/lepton-eda,' \
-		${WRKSRC}/examples/Makefile.am \
-		${WRKSRC}/examples/RF_Amp/Makefile.am \
-		${WRKSRC}/examples/TwoStageAmp/Makefile.am \
-		${WRKSRC}/examples/gTAG/Makefile.am \
-		${WRKSRC}/examples/lightning_detector/Makefile.am
+		${WRKSRC}/examples/Makefile.in \
+		${WRKSRC}/examples/RF_Amp/Makefile.in \
+		${WRKSRC}/examples/TwoStageAmp/Makefile.in \
+		${WRKSRC}/examples/gTAG/Makefile.in \
+		${WRKSRC}/examples/lightning_detector/Makefile.in
 
 .include <bsd.port.mk>
