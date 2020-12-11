@@ -15,7 +15,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgc-threaded.so:devel/boehm-gc-threaded \
 		libguile-2.2.so:lang/guile2 \
 		libpng.so:graphics/png \
-		libstroke.so:devel/libstroke
+		libstroke.so:devel/libstroke \
+		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra
 
 USES=		desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
