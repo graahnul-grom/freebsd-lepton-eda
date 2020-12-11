@@ -2,10 +2,8 @@
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.13
-DISTVERSIONSUFFIX=	-20201211
 CATEGORIES=	cad
-MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${DISTVERSIONFULL}/
-DISTNAME=	${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20201211/
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
