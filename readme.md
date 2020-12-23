@@ -6,7 +6,7 @@ Lepton EDA is a part of the FreeBSD Ports Collection ([cad/lepton-eda](https://s
 Port's page on FreshPorts.org: https://www.freshports.org/cad/lepton-eda
 <br />
 <br />
-Current version: [1.9.11](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.11-20200604).
+Current version: [1.9.13](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.13-20201211).
 <br />
 See the [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md) file for recent changes.
 <br />
@@ -21,21 +21,10 @@ started in late 2016 by most of gEDA/gaf developers at that time.
 News
 ----
 
-Lepton EDA 1.9.11 has been released.<br />
-Changes to the port have been [committed](https://svnweb.freebsd.org/ports?view=revision&revision=537997).<br />
-Thanks to Fernando (fernape@) from the FreeBSD Developers team for his quick response!
+23.12.2020:
 <br />
-
-The port has been updated to Lepton EDA 1.9.10 release.<br />
-Binary packages are available in the 2020Q2 quarterly branch.
+The port has been updated to the latest Lepton EDA release 1.9.13.
 <br />
-
-Lepton EDA 1.9.10 has been released.<br />
-Patch to update the port has been submitted:<br />
-[bug #245068: cad/lepton-eda: Update to 1.9.10](https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=245068)
-<br />
-
-Version 1.9.9 of the Lepton EDA suite is now in the Ports Collection ( submitted on January, 1st, 2020 :) )
 <br />
 Happy New Year!
 <br />
