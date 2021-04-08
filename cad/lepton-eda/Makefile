@@ -24,9 +24,9 @@ USES=		desktop-file-utils gettext-tools gnome \
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=	utils/scripts/lepton-pcb_backannotate \
-		utils/scripts/lepton-refdes_renum \
-		utils/scripts/lepton-symfix
+SHEBANG_FILES=	utils/pcb_backannotate/lepton-pcb_backannotate \
+		utils/refdes_renum/lepton-refdes_renum \
+		utils/symfix/lepton-symfix
 
 PORTEXAMPLES=	examples/*
 
