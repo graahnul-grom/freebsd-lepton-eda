@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.13
+PORTVERSION=	1.9.14
 CATEGORIES=	cad
-MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20201211/
+MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20210407/
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
