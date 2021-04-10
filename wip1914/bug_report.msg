@@ -1,7 +1,7 @@
-bug #:
+bug #254923:
 subject: cad/lepton-eda: Update to 1.9.14
 attachment "description" field: cad/lepton-eda: Update to 1.9.14
-submitted: 09 April 2021, xx:xx
+submitted: 09 April 2021, 19:51
 =============================================
 
 Greetings, dear committers!
