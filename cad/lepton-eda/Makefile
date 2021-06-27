@@ -14,7 +14,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libguile-2.2.so:lang/guile2 \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke \
-		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra
+		libgtkextra-x11-3.0.so:x11-toolkits/gtkextra \
+		libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
