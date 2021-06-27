@@ -6,7 +6,7 @@ Lepton EDA is a part of the FreeBSD Ports Collection ([cad/lepton-eda](https://s
 Port's page on FreshPorts.org: https://www.freshports.org/cad/lepton-eda
 <br />
 <br />
-Current version: [1.9.14](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.14-20210407).
+Current version: [1.9.15](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.15-20210626).
 <br />
 See the [NEWS](https://github.com/lepton-eda/lepton-eda/blob/master/NEWS.md) file for recent changes.
 <br />
@@ -16,14 +16,18 @@ is a suite of free software tools for designing electronics,
 an actively developed fork of the
 [gEDA/gaf suite](http://wiki.geda-project.org/geda:gaf),
 started in late 2016 by most of gEDA/gaf developers at that time.
+It's backward compatible with its predecessor and
+supports the same file format for symbols and schematics.
 
 
 News
 ----
 
-09.04.2021:
+27.06.2021:
 <br />
-The port has been updated to the latest Lepton EDA release 1.9.14.
+The port in this repository has been updated to the latest Lepton EDA release 1.9.15.
+<br />
+The patch has been <a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=256856">submitted</a>.
 <br />
 <br />
 
