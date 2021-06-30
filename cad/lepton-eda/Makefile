@@ -21,26 +21,24 @@ USES=		desktop-file-utils gettext-tools gnome \
 		groff:build libtool localbase makeinfo pathfix perl5 \
 		pkgconfig shared-mime-info shebangfix
 USE_GNOME=	cairo gtk20
+INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	utils/pcb_backannotate/lepton-pcb_backannotate \
 		utils/refdes_renum/lepton-refdes_renum \
 		utils/symfix/lepton-symfix
 
-PORTEXAMPLES=	examples/*
-
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-INSTALLS_ICONS=	yes
-
 INFO=	lepton-scheme lepton-manual
+PORTEXAMPLES=	examples/*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
 
-NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
 	${REINPLACE_CMD} -e \
