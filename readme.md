@@ -23,11 +23,9 @@ supports the same file format for symbols and schematics.
 News
 ----
 
-27.06.2021:
+30.06.2021:
 <br />
-The port in this repository has been updated to the latest Lepton EDA release 1.9.15.
-<br />
-The patch has been <a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=256856">submitted</a>.
+Lepton EDA 1.9.15 has been committed to the ports git repository.
 <br />
 <br />
 
