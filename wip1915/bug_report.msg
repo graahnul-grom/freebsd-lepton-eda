@@ -1,4 +1,4 @@
-bug #:
+bug #: 256856
 subject: cad/lepton-eda: Update to 1.9.15
 attachment "description" field: cad/lepton-eda: Update to 1.9.15
 submitted: 27 June 2021, 09:27
