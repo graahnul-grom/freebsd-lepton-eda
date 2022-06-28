@@ -6,7 +6,7 @@ Lepton EDA is a part of the FreeBSD Ports Collection ([cad/lepton-eda](https://c
 Port's page on FreshPorts.org: https://www.freshports.org/cad/lepton-eda
 <br />
 <br />
-Current version: [1.9.17](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.17-20211219).
+Current version: [1.9.18](https://github.com/lepton-eda/lepton-eda/releases/tag/1.9.18-20220529).
 <br />
 <br />
 [Lepton EDA](https://github.com/lepton-eda/lepton-eda)

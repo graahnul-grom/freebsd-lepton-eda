@@ -1,7 +1,7 @@
 PORTNAME=	lepton-eda
-PORTVERSION=	1.9.17
+PORTVERSION=	1.9.18
 CATEGORIES=	cad
-MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20211219/
+MASTER_SITES=	https://github.com/lepton-eda/lepton-eda/releases/download/${PORTVERSION}-20220529/
 
 MAINTAINER=	graahnul.grom@gmail.com
 COMMENT=	Lepton Electronic Design Automation
@@ -40,6 +40,7 @@ SHEBANG_FILES=	utils/pcb_backannotate/lepton-pcb_backannotate \
 		utils/symfix/lepton-symfix
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-guild
 INSTALL_TARGET=	install-strip
 
 INFO=	lepton-scheme lepton-manual
